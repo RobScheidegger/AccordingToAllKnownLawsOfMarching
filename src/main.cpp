@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
         // Handle the motion generation
         cleanupTemp();
         computeMotionScene(motionSettings, raytracer, rtScene, image);
-        createVideoFile(motionSettings.output);
+        createVideoFile(motionSettings.fps, motionSettings.output);
         if(motionSettings.cleanup){
              cleanupTemp();
         }

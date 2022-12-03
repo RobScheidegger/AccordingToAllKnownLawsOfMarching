@@ -1,13 +1,15 @@
 #include "motion.h"
 #include "qdir.h"
 #include "qimage.h"
+#include "qprocess.h"
 #include <iostream>
 #include <stdio.h>
 
 static const int FRAME_SIZE = 13;
 
 void saveImage(int frameId, QImage& image){
-    QString path = QString("frames/frame%05d.png").arg(frameId);
+
+    QString path = QString("frames/frame%0.png").arg(frameId, 5, 10, QLatin1Char('0'));
 
     bool success = image.save(path, "PNG");
     if (!success) {
@@ -30,8 +32,26 @@ void computeMotionScene(MotionSettings& settings, RayTracer& raytracer,
     }
 }
 
-void createVideoFile(std::string outputPath){
+void createVideoFile(int frameRate, std::string outputPath){
     // Call FFMpeg to do a thing
+    QString cmd = "ffmpeg";
+    QProcess process;
+    std::cout << "ffmpeg command: " << cmd.toStdString() << std::endl;
+    QStringList args;
+    args << "-framerate" << QString::fromStdString(std::to_string(frameRate))
+         << "-pattern_type" << "sequence"
+         << "-start_number" << "00001"
+         << "-i" << "frames\\frame%05d.png"
+         << "-c:v" << "libx264"
+         << "-pix_fmt" << "yuv420p"
+         << QString::fromStdString(outputPath);
+    std::cout << "Starting ffmpeg with args:" << args.join(' ').toStdString() << std::endl;
+    process.start(cmd, args);
+    std::cout << "Waiting for ffmpeg" << std::endl;
+    process.waitForFinished();
+    QString output = process.readAllStandardOutput();
+    std::cout << "ffmpeg output: " << output.toStdString() << std::endl;
+    process.close();
 }
 
 void cleanupTemp(){

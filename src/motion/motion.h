@@ -10,6 +10,6 @@ const static QString TEMP_FRAME_PATH = "frames";
 void computeMotionScene(MotionSettings& settings, RayTracer& raytracer,
                         RayTraceScene& scene, QImage& image);
 
-void createVideoFile(std::string outputPath);
+void createVideoFile(int frameRate, std::string outputPath);
 
 void cleanupTemp();
