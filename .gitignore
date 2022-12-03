@@ -181,5 +181,8 @@ Thumbs.db
 data/
 configs/
 frames/
+config.ini
+output.mp4
+output.png
 
 Qsettings.ini
