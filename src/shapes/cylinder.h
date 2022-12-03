@@ -11,4 +11,9 @@ public:
     glm::vec3 getNormal(glm::vec4 position) const override;
     float shapeSDF(glm::vec4 position) const override;
     TextureMap getTextureMap(glm::vec4 position) const override;
+
+private:
+    float m_height = 1;
+    float m_radius = 0.5;
+
 };

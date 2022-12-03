@@ -50,7 +50,8 @@ glm::vec3 Cylinder::getNormal(glm::vec4 position) const{
 }
 
 float Cylinder::shapeSDF(glm::vec4 position) const {
-    return glm::length(glm::vec3(position)) - 0.5f;
+    glm::vec2 d = abs(glm::vec2(glm::length(glm::vec2(position[0], position[2])), position[1])) - glm::vec2(m_height/2, m_radius);
+    return std::min(std::max(d[0],d[1]),0.f) + length(glm::max(d, glm::vec2(0.0)));
 }
 
 
