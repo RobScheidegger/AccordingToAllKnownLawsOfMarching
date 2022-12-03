@@ -69,7 +69,7 @@ std::optional<Intersect> intersectMarch(const RayTraceScene& shapes, const Ray& 
         if (abs(sdf.sceneSDFVal) < EPSILON) {
             // record the intersection point and its normal
 
-            replaceIntercept(intersection, Intersect{sdf.shape, distTraveledAlongRay, worldSpaceNormal(currPointAlongRay, shapes)}); // TODO: pass in shape?
+            replaceIntercept(intersection, Intersect{sdf.intersectedShape, distTraveledAlongRay, worldSpaceNormal(currPointAlongRay, shapes)}); // TODO: pass in shape?
             break;
         }
         // miss: exit if we have not intersected after the max march distance
