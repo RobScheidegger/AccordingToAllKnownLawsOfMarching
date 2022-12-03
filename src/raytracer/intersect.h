@@ -15,6 +15,11 @@ const static float PI = 3.14159265358979323846;
  */
 std::optional<Intersect> intersect(const RayTraceScene& shapes, const Ray& ray);
 
+/**
+ * @brief intersectMarch same as intersect, but finds the intersection iteratively via ray marching
+ */
+std::optional<Intersect> intersectMarch(const RayTraceScene& shapes, const Ray& ray);
+
 // Utility functions
 bool isClose(float a, float b);
 void replaceIntercept(std::optional<Intersect>& current, Intersect replacement);

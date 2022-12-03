@@ -7,6 +7,8 @@
 #include "utils/rgba.h"
 #include "utils/scenedata.h"
 
+
+
 struct Ray{
     glm::vec4 p;
     glm::vec4 d;
