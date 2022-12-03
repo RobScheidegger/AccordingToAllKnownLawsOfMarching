@@ -15,4 +15,7 @@ public:
     glm::vec3 getNormal(glm::vec4 position) const override;
     float shapeSDF(glm::vec4 position) const override;
     TextureMap getTextureMap(glm::vec4 position) const override;
+
+private:
+    glm::vec3 sideLengths{0.5f, 0.5f, 0.5f};
 };
