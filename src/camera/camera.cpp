@@ -58,3 +58,12 @@ float Camera::getAperture() const {
 glm::vec4 Camera::getPosition() const {
     return m_cameraData.pos;
 }
+
+void Camera::update(glm::vec4 position, glm::vec4 look){
+    m_cameraData.pos = position;
+    m_cameraData.look = look;
+    m_viewMatrix = computeViewMatrix();
+    m_viewMatrixInverse = glm::inverse(m_viewMatrix);
+}
+
+
