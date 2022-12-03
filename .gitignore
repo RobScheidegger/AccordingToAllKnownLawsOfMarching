@@ -180,6 +180,7 @@ Thumbs.db
 # scene data
 data/
 configs/
+outputs/
 frames/
 config.ini
 output.mp4
