@@ -50,8 +50,8 @@ RGBA RayTracer::raytrace(Ray ray, RayTraceScene& scene){
     const SceneGlobalData& globalData = scene.getGlobalData();
     const std::vector<SceneLightData> lights = scene.getLights();
 
-//    std::optional<Intersect> intersection = intersectMarch(scene, ray);
-    std::optional<Intersect> intersection = intersect(scene, ray);
+    std::optional<Intersect> intersection = intersectMarch(scene, ray);
+//    std::optional<Intersect> intersection = intersect(scene, ray);
 
     if(intersection.has_value()){
         Intersect& inter = intersection.value();
