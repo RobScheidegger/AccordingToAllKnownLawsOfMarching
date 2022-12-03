@@ -49,6 +49,11 @@ glm::vec3 Cylinder::getNormal(glm::vec4 position) const{
 
 }
 
+float Cylinder::shapeSDF(glm::vec4 position) const {
+    return glm::length(glm::vec3(position)) - 0.5f;
+}
+
+
 TextureMap Cylinder::getTextureMap(glm::vec4 position) const{
     position = m_ctm_inverse * position;
     if(isClose(position.y, -0.5)){
