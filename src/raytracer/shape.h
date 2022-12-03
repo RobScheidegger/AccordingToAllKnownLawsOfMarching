@@ -34,5 +34,6 @@ public:
     virtual ~Shape() = default;
     virtual glm::vec3 getNormal(glm::vec4 position) const = 0;
     virtual std::optional<Intersect> intersect(Ray ray) const = 0;
+    // virtual float shapeSDF(glm::vec4 position) const = 0;
     virtual TextureMap getTextureMap(glm::vec4 position) const = 0;
 };
