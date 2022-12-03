@@ -62,21 +62,23 @@ std::optional<Intersect> intersectMarch(const RayTraceScene& shapes, const Ray& 
 
         glm::vec4 currPointAlongRay = worldSpaceRay.p + distTraveledAlongRay*worldSpaceRay.d;
         // get dist to nearest surface point in scene
-        float currSDF = sceneSDF(currPointAlongRay, shapes);
+        SDFResult sdf = sceneSDF(currPointAlongRay, shapes);
+
 
         // hit: exit if we are below a distance threshold to any surface in the scene
-        if (currSDF < EPSILON) {
+        if (abs(sdf.sceneSDFVal) < EPSILON) {
             // record the intersection point and its normal
-            replaceIntercept(intersection, Intersect{nullptr, distTraveledAlongRay, worldSpaceNormal(currPointAlongRay, shapes)}); // TODO: pass in shape?
+
+            replaceIntercept(intersection, Intersect{sdf.shape, distTraveledAlongRay, worldSpaceNormal(currPointAlongRay, shapes)}); // TODO: pass in shape?
             break;
         }
         // miss: exit if we have not intersected after the max march distance
-        if (currSDF > MAX_RAYMARCH_DISTANCE) {
+        if (sdf.sceneSDFVal > MAX_RAYMARCH_DISTANCE) {
             break;
         }
 
         // take step along ray according to the sdf
-        distTraveledAlongRay += currSDF;
+        distTraveledAlongRay += sdf.sceneSDFVal;
 
     }
 
