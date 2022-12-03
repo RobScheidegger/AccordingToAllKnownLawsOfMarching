@@ -20,6 +20,8 @@ struct RenderData {
 
     std::vector<SceneLightData> lights;
     std::vector<Shape*> shapes;
+    //std::vector<glm::vec3> positionPoints;
+    //std::vector<glm::vec3>
 };
 
 class SceneParser {

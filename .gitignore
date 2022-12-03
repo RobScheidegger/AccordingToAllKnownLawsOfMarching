@@ -180,5 +180,6 @@ Thumbs.db
 # scene data
 data/
 configs/
+frames/
 
 Qsettings.ini

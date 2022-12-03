@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 # Sets project name
-project(projects_ray LANGUAGES CXX)
+project(ATAKLOM LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -35,6 +35,8 @@ add_executable(${PROJECT_NAME}
   ./src/utils/sceneparser.cpp
   ./src/raytracer/intersect.cpp
 
+  ./src/motion/motion.h ./src/motion/motion.cpp
+  ./src/utils/motionsettings.h
   ./src/camera/camera.h
   ./src/raytracer/raytracer.h
   ./src/raytracer/raytracescene.h

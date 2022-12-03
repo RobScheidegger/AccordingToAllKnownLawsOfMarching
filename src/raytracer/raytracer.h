@@ -49,9 +49,9 @@ public:
     // The ray-tracer will render the scene and fill imageData in-place.
     // @param imageData The pointer to the imageData to be filled.
     // @param scene The scene to be rendered.
-    void render(RGBA *imageData, const RayTraceScene &scene);
+    void render(RGBA *imageData, RayTraceScene& scene, const float time = 0);
 
-    RGBA raytrace(Ray ray, const RayTraceScene& scene);
+    RGBA raytrace(Ray ray, RayTraceScene& scene);
 
     void loadTexture(const SceneFileMap& fileMap);
     Texture& getTexture(const SceneFileMap& fileMap);

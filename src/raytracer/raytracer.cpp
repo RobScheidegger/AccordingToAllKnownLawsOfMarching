@@ -44,7 +44,8 @@ Ray makeRay(const Camera& camera, const RayTraceScene& scene, const int i, const
     return Ray{peye, dworld};
 }
 
-RGBA RayTracer::raytrace(Ray ray, const RayTraceScene& scene){
+RGBA RayTracer::raytrace(Ray ray, RayTraceScene& scene){
+
     const Camera& camera = scene.getCamera();
     const SceneGlobalData& globalData = scene.getGlobalData();
     const std::vector<SceneLightData> lights = scene.getLights();
@@ -66,7 +67,11 @@ RGBA RayTracer::raytrace(Ray ray, const RayTraceScene& scene){
 /**
  * Renders the scene to an array representing individual pixel data
  */
-void RayTracer::render(RGBA *imageData, const RayTraceScene& scene) {
+void RayTracer::render(RGBA *imageData, RayTraceScene& scene, const float time) {
+   // Update temporal data
+   if(time != 0){
+       scene.updateTemporalData(time);
+   }
     const Camera& camera = scene.getCamera();
 
     #pragma omp parallel for

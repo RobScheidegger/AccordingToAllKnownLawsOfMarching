@@ -32,6 +32,7 @@ public:
     // The getter of the shared pointer to the camera instance of the scene
     const Camera& getCamera() const;
 
-
+    void updateTemporalData(const float time);
 };
+
 

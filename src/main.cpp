@@ -4,9 +4,18 @@
 #include <QtCore>
 
 #include <iostream>
+#include "motion/motion.h"
 #include "utils/sceneparser.h"
 #include "raytracer/raytracer.h"
 #include "raytracer/raytracescene.h"
+
+void parseMotionSettings(QSettings& settings, MotionSettings& motionSettings){
+    motionSettings.cleanup = settings.value("Motion/cleanup").toBool();
+    motionSettings.enabled = settings.value("Motion/enabled").toBool();
+    motionSettings.fps = settings.value("Motion/fps").toInt();
+    motionSettings.seconds = settings.value("Motion/seconds").toInt();
+    motionSettings.output = settings.value("Motion/output").toString().toStdString();
+}
 
 int main(int argc, char *argv[])
 {
@@ -59,23 +68,34 @@ int main(int argc, char *argv[])
     rtConfig.enableAcceleration  = settings.value("Feature/acceleration").toBool();
     rtConfig.enableDepthOfField  = settings.value("Feature/depthoffield").toBool();
 
+    MotionSettings motionSettings;
+    parseMotionSettings(settings, motionSettings);
     RayTracer raytracer{ rtConfig };
-
     RayTraceScene rtScene{ width, height, metaData };
-
-    // Note that we're passing `data` as a pointer (to its first element)
-    // Recall from Lab 1 that you can access its elements like this: `data[i]`
-    raytracer.render(data, rtScene);
-
-    // Saving the image
-    success = image.save(oImagePath);
-    if (!success) {
-        success = image.save(oImagePath, "PNG");
-    }
-    if (success) {
-        std::cout << "Saved rendered image to \"" << oImagePath.toStdString() << "\"" << std::endl;
+    if(motionSettings.enabled){
+        // Handle the motion generation
+        cleanupTemp();
+        computeMotionScene(motionSettings, raytracer, rtScene, image);
+        createVideoFile(motionSettings.output);
+        if(motionSettings.cleanup){
+             cleanupTemp();
+        }
     } else {
-        std::cerr << "Error: failed to save image to \"" << oImagePath.toStdString() << "\"" << std::endl;
+
+        // Note that we're passing `data` as a pointer (to its first element)
+        // Recall from Lab 1 that you can access its elements like this: `data[i]`
+        raytracer.render(data, rtScene);
+
+        // Saving the image
+        success = image.save(oImagePath);
+        if (!success) {
+            success = image.save(oImagePath, "PNG");
+        }
+        if (success) {
+            std::cout << "Saved rendered image to \"" << oImagePath.toStdString() << "\"" << std::endl;
+        } else {
+            std::cerr << "Error: failed to save image to \"" << oImagePath.toStdString() << "\"" << std::endl;
+        }
     }
 
     a.exit();
