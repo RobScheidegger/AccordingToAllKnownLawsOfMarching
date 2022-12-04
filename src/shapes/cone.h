@@ -4,7 +4,7 @@
 
 class Cone final: public Shape {
 public:
-    Cone(ScenePrimitive primative, glm::mat4 ctm): Shape(primative, ctm) {}
+    Cone(ScenePrimitive primative, glm::mat4 ctm, float minScale): Shape(primative, ctm, minScale) {}
     ~Cone() = default;
 
     std::optional<Intersect> intersect(Ray ray) const override;

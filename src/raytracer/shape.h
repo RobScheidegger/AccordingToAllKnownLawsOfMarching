@@ -24,12 +24,14 @@ public:
     glm::mat4 m_ctm_inverse;
     glm::mat3 m_worldNormal;
     ScenePrimitive m_primative;
+    float m_minScale;
     // destructors must always be virtual if you decide to use virtual functions
-    Shape(ScenePrimitive primative, glm::mat4 ctm): m_primative{primative} {
+    Shape(ScenePrimitive primative, glm::mat4 ctm, float minScale): m_primative{primative} {
         m_ctm = ctm;
         m_ctm_inverse = glm::inverse(ctm);
         glm::mat3 m3 = ctm;
         m_worldNormal = glm::inverse(glm::transpose(m3));
+        m_minScale = minScale;
     }
     virtual ~Shape() = default;
     virtual glm::vec3 getNormal(glm::vec4 position) const = 0;
