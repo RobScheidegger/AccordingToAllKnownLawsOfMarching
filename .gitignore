@@ -180,10 +180,10 @@ Thumbs.db
 # scene data
 data/
 configs/
-outputs/
 frames/
-config.ini
-output.mp4
-output.png
+outputs/
 
+config.ini
 Qsettings.ini
+output.png
+output.mp4
