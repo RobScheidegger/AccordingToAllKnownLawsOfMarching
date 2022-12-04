@@ -3,6 +3,7 @@
 struct SDFResult {
     const Shape* intersectedShape;
     float sceneSDFVal;
+    float blendFactor = 1.0f;
 };
 
 SDFResult sceneSDF(glm::vec4 worldSpacePoint, const RayTraceScene& scene);

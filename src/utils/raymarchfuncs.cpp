@@ -14,6 +14,34 @@ SDFResult minUnion(std::vector<float>& shapeSDFs, const std::vector<Shape*>& sha
     return {minDistShape, minDist};
 }
 
+glm::vec2 smoothPolyMin2(float dist1, float dist2, float smoothFactor, float n) {
+    float h = std::max(smoothFactor - abs(dist1 - dist2), 0.0f) / smoothFactor;
+    float m = pow(h, n) * 0.5;
+    float s = m * smoothFactor / n;
+
+    return (dist1 < dist2) ? glm::vec2(dist1 - s, m) : glm::vec2(dist2 - s, 1.0 - m);
+}
+
+SDFResult smoothPolyMin(std::vector<float>& shapeSDFs, const std::vector<Shape*>& shapes) {
+    float minDist = std::numeric_limits<float>::infinity();
+    float secondMinDist = std::numeric_limits<float>::infinity();
+    const Shape* minDistShape = nullptr;
+
+    for (int i = 0; i < shapeSDFs.size(); i++) {
+        if (shapeSDFs[i] < minDist) {
+            secondMinDist = minDist;
+            minDist = shapeSDFs[i];
+            minDistShape = shapes[i];
+        } else if (shapeSDFs[i] < secondMinDist) {
+            secondMinDist = shapeSDFs[i];
+        }
+    }
+
+    glm::vec2 blend = smoothPolyMin2(minDist, secondMinDist, 0.1, 2);
+
+    return {minDistShape, blend[0], blend[1]};
+}
+
 SDFResult sceneSDF(glm::vec4 worldSpacePoint, const RayTraceScene& scene) {
     const std::vector<Shape*>& shapes = scene.getShapes();
     std::vector<float> shapeSDFs;
@@ -23,8 +51,8 @@ SDFResult sceneSDF(glm::vec4 worldSpacePoint, const RayTraceScene& scene) {
         shapeSDFs.push_back(shape->shapeSDF(objectSpacePos));
     }
 
-    // For now, we do naive min union
-    SDFResult sceneSDFVal = minUnion(shapeSDFs, shapes);
+    // SDFResult sceneSDFVal = minUnion(shapeSDFs, shapes);
+    SDFResult sceneSDFVal = smoothPolyMin(shapeSDFs, shapes);
     return sceneSDFVal;
 }
 

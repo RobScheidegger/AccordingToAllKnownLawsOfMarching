@@ -28,6 +28,7 @@ add_definitions(-DGLM_FORCE_SWIZZLE)
 add_executable(${PROJECT_NAME}
   ./src/main.cpp
   
+  ./src/motion/motion.cpp
   ./src/camera/camera.cpp
   ./src/raytracer/raytracer.cpp
   ./src/raytracer/raytracescene.cpp
@@ -35,7 +36,6 @@ add_executable(${PROJECT_NAME}
   ./src/utils/sceneparser.cpp
   ./src/utils/raymarchfuncs.cpp
   ./src/raytracer/intersect.cpp
-  ./src/motion/motion.cpp
   ./src/raytracer/lighting.cpp
 
   ./src/motion/motion.h 
