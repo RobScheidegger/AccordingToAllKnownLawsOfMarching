@@ -7,6 +7,8 @@
 #include "utils/rgba.h"
 #include "utils/scenedata.h"
 
+
+
 struct Ray{
     glm::vec4 p;
     glm::vec4 d;
@@ -40,6 +42,7 @@ public:
         bool enableSuperSample   = false;
         bool enableAcceleration  = false;
         bool enableDepthOfField  = false;
+        bool enableRayMarching   = false;
     };
 
 public:

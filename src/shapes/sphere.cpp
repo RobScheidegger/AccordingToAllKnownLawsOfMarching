@@ -25,6 +25,10 @@ std::optional<Intersect> Sphere::intersect(Ray ray) const{
     return intersect;
 }
 
+float Sphere::shapeSDF(glm::vec4 position) const {
+    return glm::length(glm::vec3(position)) - 0.5f;
+}
+
 TextureMap Sphere::getTextureMap(glm::vec4 position) const{
     position = m_ctm_inverse * position;
     // Get phi and theta angles, extrapolate from there

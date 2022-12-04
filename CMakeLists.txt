@@ -33,9 +33,12 @@ add_executable(${PROJECT_NAME}
   ./src/raytracer/raytracescene.cpp
   ./src/utils/scenefilereader.cpp
   ./src/utils/sceneparser.cpp
+  ./src/utils/raymarchfuncs.cpp
   ./src/raytracer/intersect.cpp
+  ./src/motion/motion.cpp
+  ./src/raytracer/lighting.cpp
 
-  ./src/motion/motion.h ./src/motion/motion.cpp
+  ./src/motion/motion.h 
   ./src/utils/motionsettings.h
   ./src/camera/camera.h
   ./src/raytracer/raytracer.h
@@ -44,8 +47,9 @@ add_executable(${PROJECT_NAME}
   ./src/utils/scenedata.h
   ./src/utils/scenefilereader.h
   ./src/utils/sceneparser.h
+  ./src/utils/raymarchfuncs.h
   ./src/raytracer/intersect.h
-  ./src/raytracer/lighting.h ./src/raytracer/lighting.cpp
+  ./src/raytracer/lighting.h 
 
   ./src/raytracer/shape.h
   ./src/shapes/cube.cpp ./src/shapes/cube.h

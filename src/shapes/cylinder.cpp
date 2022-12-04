@@ -49,6 +49,12 @@ glm::vec3 Cylinder::getNormal(glm::vec4 position) const{
 
 }
 
+float Cylinder::shapeSDF(glm::vec4 position) const {
+    glm::vec2 d = abs(glm::vec2(glm::length(glm::vec2(position[0], position[2])), position[1])) - glm::vec2(m_height/2, m_radius);
+    return std::min(std::max(d[0],d[1]),0.f) + length(glm::max(d, glm::vec2(0.0)));
+}
+
+
 TextureMap Cylinder::getTextureMap(glm::vec4 position) const{
     position = m_ctm_inverse * position;
     if(isClose(position.y, -0.5)){

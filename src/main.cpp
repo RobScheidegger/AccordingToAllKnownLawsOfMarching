@@ -67,6 +67,7 @@ int main(int argc, char *argv[])
     rtConfig.enableSuperSample   = settings.value("Feature/super-sample").toBool();
     rtConfig.enableAcceleration  = settings.value("Feature/acceleration").toBool();
     rtConfig.enableDepthOfField  = settings.value("Feature/depthoffield").toBool();
+    rtConfig.enableRayMarching   = settings.value("Feature/raymarching").toBool();
 
     MotionSettings motionSettings;
     parseMotionSettings(settings, motionSettings);

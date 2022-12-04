@@ -80,6 +80,13 @@ glm::vec3 Cube::getNormal(glm::vec4 position) const{
     return glm::vec3{0,0,0};
 }
 
+float Cube::shapeSDF(glm::vec4 position) const {
+    glm::vec3 q = glm::vec3(abs(position[0]), abs(position[1]), abs(position[2])) - sideLengths;
+
+    return glm::length(glm::vec3(std::max(q[0], 0.0f), std::max(q[1], 0.0f), std::max(q[2], 0.0f)))
+            + std::min(std::max(q[0],std::max(q[1],q[2])), 0.0f);
+}
+
 TextureMap Cube::getTextureMap(glm::vec4 position) const{
     position = m_ctm_inverse * position;
     if(isClose(position.z, -0.5)){

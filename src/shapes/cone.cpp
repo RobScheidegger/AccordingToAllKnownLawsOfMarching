@@ -45,6 +45,15 @@ glm::vec3 Cone::getNormal(glm::vec4 position) const{
     return objectToWorldNormal(normal, this);
 }
 
+float Cone::shapeSDF(glm::vec4 position) const {
+    float coneSideLen = std::sqrt(std::pow(m_radius, 2) + std::pow(m_height, 2));
+    float sinVal = m_height / coneSideLen;
+    float cosVal = m_radius / coneSideLen;
+
+    float q = length(glm::vec2(position[0], position[2]));
+    return std::max(glm::dot(glm::vec2(sinVal, cosVal), glm::vec2(q, (position[1] - m_height / 2.0f))), (-1.0f * m_height) - (position[1] - m_height / 2.0f));
+}
+
 TextureMap Cone::getTextureMap(glm::vec4 position) const{
     position = m_ctm_inverse * position;
     if(isClose(position.y, -0.5)){
