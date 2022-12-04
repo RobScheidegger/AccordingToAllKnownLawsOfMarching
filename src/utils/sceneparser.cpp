@@ -24,16 +24,16 @@ glm::mat4 transformationToMatrix(SceneTransformation transformation){
     return glm::mat4(1);
 }
 
-Shape* makeShape(ScenePrimitive& primative, glm::mat4 ctm){
+Shape* makeShape(ScenePrimitive& primative, glm::mat4 ctm, float minScale){
     switch(primative.type){
         case PrimitiveType::PRIMITIVE_SPHERE:
-            return new Sphere(primative, ctm);
+            return new Sphere(primative, ctm, minScale);
         case PrimitiveType::PRIMITIVE_CYLINDER:
-            return new Cylinder(primative, ctm);
+            return new Cylinder(primative, ctm, minScale);
         case PrimitiveType::PRIMITIVE_CUBE:
-            return new Cube(primative, ctm);
+            return new Cube(primative, ctm, minScale);
         case PrimitiveType::PRIMITIVE_CONE:
-            return new Cone(primative, ctm);
+            return new Cone(primative, ctm, minScale);
         case PrimitiveType::PRIMITIVE_MESH:
         case PrimitiveType::PRIMITIVE_TORUS:
             throw std::invalid_argument("received unsupported primitive type");
@@ -41,20 +41,27 @@ Shape* makeShape(ScenePrimitive& primative, glm::mat4 ctm){
     return NULL;
 }
 
-void traverseSceneGraph(SceneNode* node, glm::mat4 mParent, std::vector<Shape*>& shapes){
+void traverseSceneGraph(SceneNode* node, glm::mat4 mParent, std::vector<Shape*>& shapes, float minScale){
+    float currMin = minScale;
+
     for(int i = 0; i < node->transformations.size(); i++){
         SceneTransformation transformation = *node->transformations[i];
+
+        if (transformation.type == TransformationType::TRANSFORMATION_SCALE) {
+            currMin = std::min(currMin,
+                               std::min(transformation.scale[0], std::min(transformation.scale[1], transformation.scale[2])));
+        }
 
         mParent *= transformationToMatrix(transformation);
     }
 
     for(int i = 0; i < node->primitives.size(); i++){
-        Shape* shape = makeShape(*node->primitives[i], mParent);
+        Shape* shape = makeShape(*node->primitives[i], mParent, currMin);
         shapes.emplace_back(shape);
     }
 
     for(int i = 0; i < node->children.size(); i++){
-        traverseSceneGraph(node->children[i], mParent, shapes);
+        traverseSceneGraph(node->children[i], mParent, shapes, currMin);
     }
 }
 
@@ -72,7 +79,7 @@ bool SceneParser::parse(std::string filepath, RenderData &renderData) {
     SceneNode* root = fileReader.getRootNode();
     renderData.shapes.clear();
 
-    traverseSceneGraph(root, glm::mat4(1), renderData.shapes);
+    traverseSceneGraph(root, glm::mat4(1), renderData.shapes, std::numeric_limits<float>::infinity());
 
     return true;
 }

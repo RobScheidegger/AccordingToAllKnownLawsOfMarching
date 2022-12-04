@@ -8,7 +8,7 @@
 
 class Cube final: public Shape {
 public:
-    Cube(ScenePrimitive primative, glm::mat4 ctm): Shape(primative, ctm) {}
+    Cube(ScenePrimitive primative, glm::mat4 ctm, float minScale): Shape(primative, ctm, minScale) {}
     ~Cube() = default;
 
     std::optional<Intersect> intersect(Ray ray) const override;

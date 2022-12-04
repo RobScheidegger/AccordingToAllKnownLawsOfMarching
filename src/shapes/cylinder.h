@@ -4,7 +4,7 @@
 
 class Cylinder final: public Shape {
 public:
-    Cylinder(ScenePrimitive primative, glm::mat4 ctm): Shape(primative, ctm) {}
+    Cylinder(ScenePrimitive primative, glm::mat4 ctm, float minScale): Shape(primative, ctm, minScale) {}
     ~Cylinder() = default;
 
     std::optional<Intersect> intersect(Ray ray) const override;

@@ -4,7 +4,7 @@
 
 class Sphere final: public Shape {
 public:
-    Sphere(ScenePrimitive primative, glm::mat4 ctm): Shape(primative, ctm) {}
+    Sphere(ScenePrimitive primative, glm::mat4 ctm, float minScale): Shape(primative, ctm, minScale) {}
     ~Sphere() = default;
 
     std::optional<Intersect> intersect(Ray ray) const override;

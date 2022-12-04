@@ -67,14 +67,13 @@ std::optional<Intersect> intersectMarch(const RayTraceScene& shapes, const Ray& 
 
 
         // hit: exit if we are below a distance threshold to any surface in the scene
-        if (abs(sdf.sceneSDFVal) <= MARCH_EPSILON) {
+        if (sdf.sceneSDFVal <= MARCH_EPSILON) {
             // record the intersection point and its normal
-
             replaceIntercept(intersection, Intersect{sdf.intersectedShape, distTraveledAlongRay, worldSpaceNormal(currPointAlongRay, shapes)});
             break;
         }
         // miss: exit if we have not intersected after the max march distance
-        if (sdf.sceneSDFVal > MAX_RAYMARCH_DISTANCE) {
+        if (distTraveledAlongRay > MAX_RAYMARCH_DISTANCE) {
             break;
         }
 
