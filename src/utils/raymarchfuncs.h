@@ -1,9 +1,8 @@
 #include "raytracer/raytracescene.h"
 
 struct SDFResult {
-    const Shape* intersectedShape;
+    PPShape intersectedShape;
     float sceneSDFVal;
-    float blendFactor = 1.0f;
 };
 
 SDFResult sceneSDF(glm::vec4 worldSpacePoint, const RayTraceScene& scene);

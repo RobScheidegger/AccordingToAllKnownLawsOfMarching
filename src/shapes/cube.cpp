@@ -13,21 +13,21 @@ std::optional<Intersect> Cube::intersect(Ray ray) const{
     float t_top = (0.5f - ray.p.y) / ray.d.y;
     glm::vec4 top_pos = ray.evaluate(t_top);
     if(abs(top_pos.x) < 0.5 && abs(top_pos.z) < 0.5){
-        replaceIntercept(intersect, Intersect{this, t_top, objectToWorldNormal(glm::vec3{0, 1, 0}, this)});
+        replaceIntercept(intersect, Intersect{{false, 1.0f, this}, t_top, objectToWorldNormal(glm::vec3{0, 1, 0}, this)});
     }
 
     // Bottom face, y = -1/2
     float t_bottom = (-0.5f - ray.p.y) / ray.d.y;
     glm::vec4 bottom_pos = ray.evaluate(t_bottom);
     if(abs(bottom_pos.x) < 0.5 && abs(bottom_pos.z) < 0.5){
-        replaceIntercept(intersect, Intersect{this, t_bottom, objectToWorldNormal(glm::vec3{0, -1, 0}, this)});
+        replaceIntercept(intersect, Intersect{{false, 1.0f, this}, t_bottom, objectToWorldNormal(glm::vec3{0, -1, 0}, this)});
     }
 
     // Left face, z = -1/2
     float t_left = (-0.5f - ray.p.z) / ray.d.z;
     glm::vec4 left_pos = ray.evaluate(t_left);
     if(abs(left_pos.x) < 0.5 && abs(left_pos.y) < 0.5){
-        replaceIntercept(intersect, Intersect{this, t_left, objectToWorldNormal(glm::vec3{0, 0, -1}, this)});
+        replaceIntercept(intersect, Intersect{{false, 1.0f, this}, t_left, objectToWorldNormal(glm::vec3{0, 0, -1}, this)});
     }
 
 
@@ -35,21 +35,21 @@ std::optional<Intersect> Cube::intersect(Ray ray) const{
     float t_right = (0.5f - ray.p.z) / ray.d.z;
     glm::vec4 right_pos = ray.evaluate(t_right);
     if(abs(right_pos.x) < 0.5 && abs(right_pos.y) < 0.5){
-        replaceIntercept(intersect, Intersect{this, t_right, objectToWorldNormal(glm::vec3{0, 0, 1}, this)});
+        replaceIntercept(intersect, Intersect{{false, 1.0f, this}, t_right, objectToWorldNormal(glm::vec3{0, 0, 1}, this)});
     }
 
     // Front face, x = 1/2
     float t_front = (0.5f - ray.p.x) / ray.d.x;
     glm::vec4 front_pos = ray.evaluate(t_front);
     if(abs(front_pos.z) < 0.5 && abs(front_pos.y) < 0.5){
-        replaceIntercept(intersect, Intersect{this, t_front, objectToWorldNormal(glm::vec3{1, 0, 0}, this)});
+        replaceIntercept(intersect, Intersect{{false, 1.0f, this}, t_front, objectToWorldNormal(glm::vec3{1, 0, 0}, this)});
     }
 
     // Back face, x = -1/2
     float t_back = (-0.5f - ray.p.x) / ray.d.x;
     glm::vec4 back_pos = ray.evaluate(t_back);
     if(abs(back_pos.z) < 0.5 && abs(back_pos.y) < 0.5){
-        replaceIntercept(intersect, Intersect{this, t_back, objectToWorldNormal(glm::vec3{-1, 0, 0}, this)});
+        replaceIntercept(intersect, Intersect{{false, 1.0f, this}, t_back, objectToWorldNormal(glm::vec3{-1, 0, 0}, this)});
     }
 
     return intersect;

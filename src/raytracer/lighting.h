@@ -8,7 +8,7 @@
 SceneColor computePixelLighting(glm::vec4  position,
            glm::vec4  normal,
            glm::vec4  directionToCamera,
-           const Shape* shape,
+           PPShape shape,
            int recursiveDepth,
            const RayTraceScene& scene,
            RayTracer& rayTracer);

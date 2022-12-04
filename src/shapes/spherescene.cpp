@@ -13,12 +13,12 @@ std::optional<Intersect> SphereScene::intersect(Ray ray) const{
     std::pair<std::optional<float>, std::optional<float>> t = solveQuadratic(a, b, c);
     if(t.first.has_value()){
         replaceIntercept(intersect,
-                    Intersect{this, t.first.value(), getNormal(ray.evaluate(t.first.value()))}
+                    Intersect{{false, 1.0f, this}, t.first.value(), getNormal(ray.evaluate(t.first.value()))}
                );
     }
     if(t.second.has_value()){
         replaceIntercept(intersect,
-                    Intersect{this, t.second.value(), getNormal(ray.evaluate(t.second.value()))}
+                    Intersect{{false, 1.0f, this}, t.second.value(), getNormal(ray.evaluate(t.second.value()))}
                );
     }
 

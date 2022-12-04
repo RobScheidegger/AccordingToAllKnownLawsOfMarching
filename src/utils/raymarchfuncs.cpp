@@ -11,7 +11,7 @@ SDFResult minUnion(std::vector<float>& shapeSDFs, const std::vector<Shape*>& sha
         }
     }
 
-    return {minDistShape, minDist};
+    return {{false, 1.0f, minDistShape}, minDist};
 }
 
 glm::vec2 smoothPolyMin2(float dist1, float dist2, float smoothFactor, float n) {
@@ -26,20 +26,24 @@ SDFResult smoothPolyMin(std::vector<float>& shapeSDFs, const std::vector<Shape*>
     float minDist = std::numeric_limits<float>::infinity();
     float secondMinDist = std::numeric_limits<float>::infinity();
     const Shape* minDistShape = nullptr;
+    const Shape* secondMinDistShape = nullptr;
 
     for (int i = 0; i < shapeSDFs.size(); i++) {
         if (shapeSDFs[i] < minDist) {
             secondMinDist = minDist;
+            secondMinDistShape = minDistShape;
+
             minDist = shapeSDFs[i];
             minDistShape = shapes[i];
         } else if (shapeSDFs[i] < secondMinDist) {
             secondMinDist = shapeSDFs[i];
+            secondMinDistShape = shapes[i];
         }
     }
 
-    glm::vec2 blend = smoothPolyMin2(minDist, secondMinDist, 0.1, 2);
+    glm::vec2 blend = smoothPolyMin2(minDist, secondMinDist, 0.8, 2);
 
-    return {minDistShape, blend[0], blend[1]};
+    return {{true, blend[1], minDistShape, secondMinDistShape}, blend[0]};
 }
 
 SDFResult sceneSDF(glm::vec4 worldSpacePoint, const RayTraceScene& scene) {

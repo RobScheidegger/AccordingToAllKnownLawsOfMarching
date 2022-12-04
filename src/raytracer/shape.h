@@ -7,8 +7,16 @@
 
 class Shape; // Forward ref
 
+// Possibly Paired Shape
+struct PPShape {
+    bool isPair = false;
+    float blendFactor = 1.0f;
+    const Shape* shape1;
+    const Shape* shape2 = nullptr;
+};
+
 struct Intersect{
-    const Shape* shape;
+    PPShape shape;
     float t;
     glm::vec3 normal;
 };
@@ -38,12 +46,4 @@ public:
     virtual std::optional<Intersect> intersect(Ray ray) const = 0;
     virtual float shapeSDF(glm::vec4 position) const = 0;
     virtual TextureMap getTextureMap(glm::vec4 position) const = 0;
-};
-
-// Possibly Paired Shape
-struct PPShape {
-    bool isPair = false;
-    float blendFactor = 1.0f;
-    const Shape* shape1;
-    const Shape* shape2 = nullptr;
 };
