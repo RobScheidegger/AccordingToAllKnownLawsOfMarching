@@ -12,6 +12,5 @@ public:
     float shapeSDF(glm::vec4 position) const override;
     TextureMap getTextureMap(glm::vec4 position) const override;
 private:
-    float m_sphereRadius = 0.3;
-    float m_sphereSeparation = 1;
+    int m_numIterations = 50;
 };
