@@ -39,7 +39,7 @@ Ray makeRay(const Camera& camera, const RayTraceScene& scene, const int i, const
     glm::vec4 ppixel {x, y, -1, 1};
     glm::vec4 peye = camera.getPosition();
     glm::mat4 viewMatrix = camera.getViewMatrixInverse();
-    glm::vec4 dworld = viewMatrix * ppixel - peye;
+    glm::vec4 dworld = glm::normalize(viewMatrix * ppixel - peye);
 
     return Ray{peye, dworld};
 }
