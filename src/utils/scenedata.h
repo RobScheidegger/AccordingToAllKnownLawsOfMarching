@@ -20,7 +20,9 @@ enum class PrimitiveType {
     PRIMITIVE_CYLINDER,
     PRIMITIVE_TORUS,
     PRIMITIVE_SPHERE,
-    PRIMITIVE_MESH
+    PRIMITIVE_MESH,
+    SPHERE_SCENE, // infinitely duplicated spheres
+    PRIMITIVE_FRACTAL
 };
 
 // Enum of the types of transformations that can be applied

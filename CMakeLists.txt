@@ -38,6 +38,7 @@ add_executable(${PROJECT_NAME}
   ./src/motion/motion.cpp
   ./src/raytracer/lighting.cpp
 
+
   ./src/motion/motion.h 
   ./src/utils/motionsettings.h
   ./src/camera/camera.h
@@ -51,11 +52,14 @@ add_executable(${PROJECT_NAME}
   ./src/raytracer/intersect.h
   ./src/raytracer/lighting.h 
 
+
   ./src/raytracer/shape.h
   ./src/shapes/cube.cpp ./src/shapes/cube.h
   ./src/shapes/sphere.h ./src/shapes/sphere.cpp
   ./src/shapes/cylinder.h ./src/shapes/cylinder.cpp
   ./src/shapes/cone.h ./src/shapes/cone.cpp
+  ./src/shapes/fractal.h ./src/shapes/fractal.cpp
+  ./src/shapes/spherescene.h ./src/shapes/spherescene.cpp
 )
 
 # GLM: this creates its library and allows you to `#include "glm/..."`
