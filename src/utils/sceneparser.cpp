@@ -3,8 +3,10 @@
 #include "glm/gtx/transform.hpp"
 #include "shapes/cube.h"
 #include "shapes/cylinder.h"
+#include "shapes/fractal.h"
 #include "shapes/sphere.h"
 #include "shapes/cone.h"
+#include "shapes/spherescene.h"
 
 #include <chrono>
 #include <memory>
@@ -37,6 +39,10 @@ Shape* makeShape(ScenePrimitive& primative, glm::mat4 ctm, float minScale){
         case PrimitiveType::PRIMITIVE_MESH:
         case PrimitiveType::PRIMITIVE_TORUS:
             throw std::invalid_argument("received unsupported primitive type");
+        case PrimitiveType::SPHERE_SCENE:
+            return new SphereScene(primative, ctm, minScale);
+        case PrimitiveType::PRIMITIVE_FRACTAL:
+            return new Fractal(primative, ctm, minScale);
     }
     return NULL;
 }

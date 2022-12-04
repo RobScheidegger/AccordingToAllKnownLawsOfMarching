@@ -2,10 +2,10 @@
 #include <memory>
 #include "utils/raymarchfuncs.h"
 
-const static int MAX_NUM_RAYMARCH_STEPS = 1000;
+const static int MAX_NUM_RAYMARCH_STEPS = 4000;
 const static float MAX_RAYMARCH_DISTANCE = 1000.0;
-const static float EPSILON = 0.0001;
-const static float MARCH_EPSILON = 0.0001;
+const static float EPSILON = 0.00001;
+const static float MARCH_EPSILON = 0.00001;
 
 bool isClose(float a, float b){
     return std::abs(a - b) <= EPSILON;
