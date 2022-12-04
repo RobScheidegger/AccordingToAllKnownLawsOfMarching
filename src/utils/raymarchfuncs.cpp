@@ -20,7 +20,8 @@ SDFResult sceneSDF(glm::vec4 worldSpacePoint, const RayTraceScene& scene) {
 
     for(const Shape* shape : shapes){
         glm::vec4 objectSpacePos = shape->m_ctm_inverse * worldSpacePoint;
-        shapeSDFs.push_back(shape->shapeSDF(objectSpacePos));
+        // NOTE: must scale the distance by the minimum scale factor in the CTM to avoid stepping over the shape
+        shapeSDFs.push_back( shape->shapeSDF( objectSpacePos) * shape->m_minScale );
     }
 
     // For now, we do naive min union

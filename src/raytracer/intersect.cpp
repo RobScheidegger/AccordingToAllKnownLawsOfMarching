@@ -74,7 +74,7 @@ std::optional<Intersect> intersectMarch(const RayTraceScene& shapes, const Ray& 
             break;
         }
         // miss: exit if we have not intersected after the max march distance
-        if (sdf.sceneSDFVal > MAX_RAYMARCH_DISTANCE) {
+        if (distTraveledAlongRay > MAX_RAYMARCH_DISTANCE) {
             break;
         }
 
