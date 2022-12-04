@@ -2,9 +2,10 @@
 #include <memory>
 #include "utils/raymarchfuncs.h"
 
-const static int MAX_NUM_RAYMARCH_STEPS = 100;
+const static int MAX_NUM_RAYMARCH_STEPS = 1000;
 const static float MAX_RAYMARCH_DISTANCE = 1000.0;
-const static float EPSILON = 0.00001;
+const static float EPSILON = 0.0001;
+const static float MARCH_EPSILON = 0.0001;
 
 bool isClose(float a, float b){
     return std::abs(a - b) <= EPSILON;
@@ -66,7 +67,7 @@ std::optional<Intersect> intersectMarch(const RayTraceScene& shapes, const Ray& 
 
 
         // hit: exit if we are below a distance threshold to any surface in the scene
-        if (abs(sdf.sceneSDFVal) < EPSILON) {
+        if (abs(sdf.sceneSDFVal) <= MARCH_EPSILON) {
             // record the intersection point and its normal
 
             replaceIntercept(intersection, Intersect{sdf.intersectedShape, distTraveledAlongRay, worldSpaceNormal(currPointAlongRay, shapes)});

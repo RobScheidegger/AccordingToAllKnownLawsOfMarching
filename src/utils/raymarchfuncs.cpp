@@ -29,7 +29,7 @@ SDFResult sceneSDF(glm::vec4 worldSpacePoint, const RayTraceScene& scene) {
 }
 
 glm::vec3 worldSpaceNormal(glm::vec4 worldSpacePoint, const RayTraceScene& scene) {
-    const float smallStep = 0.001;
+    const float smallStep = 0.0001;
 
     float gradient_x = sceneSDF(worldSpacePoint + glm::vec4(smallStep, 0.0f, 0.0f, 0.0f), scene).sceneSDFVal
             - sceneSDF(worldSpacePoint - glm::vec4(smallStep, 0.0f, 0.0f, 0.0f), scene).sceneSDFVal;
