@@ -56,7 +56,14 @@ void traverseSceneGraph(SceneNode* node, glm::mat4 mParent, std::vector<Shape*>&
     }
 
     for(int i = 0; i < node->primitives.size(); i++){
-        Shape* shape = makeShape(*node->primitives[i], mParent, currMin);
+        Shape* shape;
+
+        if (currMin == std::numeric_limits<float>::infinity()) {
+            shape = makeShape(*node->primitives[i], mParent, 1.0f);
+        } else {
+            shape = makeShape(*node->primitives[i], mParent, currMin);
+        }
+
         shapes.emplace_back(shape);
     }
 
