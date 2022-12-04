@@ -69,9 +69,8 @@ RGBA RayTracer::raytrace(Ray ray, RayTraceScene& scene){
  */
 void RayTracer::render(RGBA *imageData, RayTraceScene& scene, const float time) {
    // Update temporal data
-   if(time != 0){
-       scene.updateTemporalData(time);
-   }
+    scene.updateTemporalData(time);
+
     const Camera& camera = scene.getCamera();
 
     #pragma omp parallel for

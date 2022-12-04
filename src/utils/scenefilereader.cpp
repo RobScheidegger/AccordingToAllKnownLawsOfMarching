@@ -465,6 +465,7 @@ bool ScenefileReader::parseCameraData(const QDomElement &cameradata) {
                // Store the focus point in the look vector (we will later subtract
                // the camera position from this to get the actual look vector)
                m_cameraData.look.w = 1;
+               m_cameraData.useFocusPoint = true;
                focusFound = true;
            } else {
                // Just store the look vector
@@ -494,6 +495,19 @@ bool ScenefileReader::parseCameraData(const QDomElement &cameradata) {
                PARSE_ERROR(e);
                return false;
            }
+       } else if (e.tagName() == "curve"){ // Parse the camera bezier curve elements. Added in order
+           glm::vec3 p;
+           if (!parseTriple(e, p.x, p.y, p.z, "x", "y", "z")) {
+               PARSE_ERROR(e);
+               return false;
+           }
+           m_cameraData.useBezierCurves = true;
+           m_cameraData.curves.push_back(p);
+       } else if (e.tagName() == "speed") {
+           if (!parseSingle(e, m_cameraData.speed, "v")) {
+               PARSE_ERROR(e);
+               return false;
+           }
        } else if (!e.isNull()) {
            UNSUPPORTED_ELEMENT(e);
            return false;
@@ -506,7 +520,7 @@ bool ScenefileReader::parseCameraData(const QDomElement &cameradata) {
        return false;
    }
 
-   if (focusFound) {
+   if (focusFound && !m_cameraData.useFocusPoint) {
        // Convert the focus point (stored in the look vector) into a
        // look vector from the camera position to that focus point.
        m_cameraData.look -= m_cameraData.pos;

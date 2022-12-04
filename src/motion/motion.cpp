@@ -33,6 +33,10 @@ void computeMotionScene(MotionSettings& settings, RayTracer& raytracer,
 }
 
 void createVideoFile(int frameRate, std::string outputPath){
+    //Rmove an old video file if it exists
+    QFile file(QString::fromStdString(outputPath));
+    if(file.exists())
+        file.remove();
     // Call FFMpeg to do a thing
     QString cmd = "ffmpeg";
     QProcess process;

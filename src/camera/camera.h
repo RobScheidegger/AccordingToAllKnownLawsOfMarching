@@ -47,5 +47,5 @@ public:
 
     glm::vec4 getPosition() const;
 
-    void update(glm::vec4 position, glm::vec4 look);
+    void update(float time);
 };

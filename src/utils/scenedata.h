@@ -70,6 +70,13 @@ struct SceneCameraData {
 
     float aperture;      // Only applicable for depth of field
     float focalLength;   // Only applicable for depth of field
+
+    // Bezier curve camera movement
+    bool useBezierCurves = false;
+    std::vector<glm::vec3> curves;
+    float speed = 1; // Speed that the camera moves along the curve. Measured in total bezier curves per second
+    bool useFocusPoint = false;
+    glm::vec3 focus;
 };
 
 // Struct which contains data for texture mapping files

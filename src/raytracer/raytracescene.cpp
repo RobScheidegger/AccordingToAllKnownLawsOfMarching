@@ -35,7 +35,7 @@ const std::vector<SceneLightData>& RayTraceScene::getLights() const {
 
 void RayTraceScene::updateTemporalData(const float time){
     // Update camera position and rotation
-
+    m_camera.update(time);
 
     // LATER: Update shape CTMs if they are temporal
 }
