@@ -1,5 +1,8 @@
 #include "raymarchfuncs.h"
 
+#define BLEND_FACTOR 0.8
+#define POLY_DEGREE 2
+
 SDFResult minUnion(std::vector<float>& shapeSDFs, const std::vector<Shape*>& shapes) {
     float minDist = std::numeric_limits<float>::infinity();
     const Shape* minDistShape = nullptr;
@@ -41,7 +44,7 @@ SDFResult smoothPolyMin(std::vector<float>& shapeSDFs, const std::vector<Shape*>
         }
     }
 
-    glm::vec2 blend = smoothPolyMin2(minDist, secondMinDist, 0.8, 2);
+    glm::vec2 blend = smoothPolyMin2(minDist, secondMinDist, BLEND_FACTOR, POLY_DEGREE);
 
     return {{true, blend[1], minDistShape, secondMinDistShape}, blend[0]};
 }
