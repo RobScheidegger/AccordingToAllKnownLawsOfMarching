@@ -10,9 +10,11 @@
 		<focus x="0" y="0" z="0"/>
 		<up x="0" y="1" z="0"/>
 		<heightangle v="45"/>
-		<curve x="0" y="0" z="5"/>
-		<curve x="0" y="0" z="2"/>
-		<speed v="1" />
+		<curve x="-5" y="-5" z="5"/>
+		<curve x="0" y="10" z="5"/>
+		<curve x="-5" y="5" z="5"/>
+		<curve x="-5" y="-5" z="5"/>
+		<speed v="0.5" />
     </cameradata>
 
     <lightdata>
@@ -38,7 +40,7 @@
 
     <object type="tree" name="root">
 	<transblock>
-	    <translate x="0" y="0" z="-5"/>
+	    <translate x="0" y="0" z="0"/>
 	    <scale x="1.5" y="1.5" z="1.5"/>
 	    <object type="primitive" name="cylinder" >
 		<ambient r="0" g="0.5" b="0"/>

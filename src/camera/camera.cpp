@@ -81,7 +81,7 @@ size_t binom(size_t n, size_t k) noexcept
  * @return
  */
 glm::vec3 bezier(std::vector<glm::vec3>& points, float time){
-    int n = points.size() + 1;
+    int n = points.size() - 1;
     glm::vec3 b {0,0,0};
     for(int i = 0; i < points.size(); i++){
         float coeff = binom(n, i) * std::pow(1 - time, n - i) * std::pow(time, i);
@@ -103,6 +103,9 @@ void Camera::update(float time){
     // Compute the new position by computing the point on the bezier curve
     double intpart;
     float bezierTime = modf((double)time * m_cameraData.speed, &intpart);
+    if(intpart > 0){
+        int t = 0;
+    }
     glm::vec3 position = bezier(m_cameraData.curves, bezierTime);
 
     glm::vec3 look;

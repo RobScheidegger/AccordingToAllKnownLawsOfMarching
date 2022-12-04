@@ -520,7 +520,7 @@ bool ScenefileReader::parseCameraData(const QDomElement &cameradata) {
        return false;
    }
 
-   if (focusFound && !m_cameraData.useFocusPoint) {
+   if (focusFound && !m_cameraData.useBezierCurves) {
        // Convert the focus point (stored in the look vector) into a
        // look vector from the camera position to that focus point.
        m_cameraData.look -= m_cameraData.pos;

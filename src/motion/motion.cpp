@@ -28,7 +28,7 @@ void computeMotionScene(MotionSettings& settings, RayTracer& raytracer,
         raytracer.render(data, scene, time);
 
         saveImage(i, image);
-        printf("Generated frame %d\n", i);
+        printf("Generated frame %d\n\r", i);
     }
 }
 
