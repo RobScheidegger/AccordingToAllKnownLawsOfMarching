@@ -141,6 +141,10 @@ struct ScenePrimitive {
    PrimitiveType type;
    SceneMaterial material;
    std::string   meshfile; // Used for triangle meshes
+
+   bool useBezierCurves = false;
+   std::vector<glm::vec3> controlPoints; // used for animation
+   float movementSpeed = 1;
 };
 
 // Struct which contains data for a transformation.

@@ -37,6 +37,7 @@ add_executable(${PROJECT_NAME}
   ./src/utils/raymarchfuncs.cpp
   ./src/raytracer/intersect.cpp
   ./src/raytracer/lighting.cpp
+  ./src/utils/bezierfuncs.cpp
 
 
   ./src/motion/motion.h 
@@ -51,6 +52,7 @@ add_executable(${PROJECT_NAME}
   ./src/utils/raymarchfuncs.h
   ./src/raytracer/intersect.h
   ./src/raytracer/lighting.h 
+  ./src/utils/bezierfuncs.h
 
 
   ./src/raytracer/shape.h
