@@ -44,9 +44,12 @@ SDFResult smoothPolyMin(std::vector<float>& shapeSDFs, const std::vector<Shape*>
         }
     }
 
-    glm::vec2 blend = smoothPolyMin2(minDist, secondMinDist, BLEND_FACTOR, POLY_DEGREE);
-
-    return {{true, blend[1], minDistShape, secondMinDistShape}, blend[0]};
+    if (secondMinDistShape != nullptr) {
+        glm::vec2 blend = smoothPolyMin2(minDist, secondMinDist, BLEND_FACTOR, POLY_DEGREE);
+        return {{true, blend[1], minDistShape, secondMinDistShape}, blend[0]};
+    } else {
+        return {{false, 1.0f, minDistShape}, minDist};
+    }
 }
 
 SDFResult sceneSDF(glm::vec4 worldSpacePoint, const RayTraceScene& scene) {
