@@ -82,6 +82,14 @@ void RayTracer::render(RGBA *imageData, RayTraceScene& scene, const float time) 
     #pragma omp parallel for
     for(int i = 0; i < scene.width(); i++){
         for(int j = 0; j < scene.height(); j++){
+            /*
+            if (i < 253 || j < 394) {
+                continue;
+            }
+            if (i == 253 && j == 394) {
+                std::cout << "desired pixel" << std::endl;
+            }
+            */
             const int idx = j * scene.width() + i;
             Ray ray = makeRay(camera, scene, i, j);
             if(m_config.enableSuperSample){

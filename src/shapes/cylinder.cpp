@@ -15,13 +15,21 @@ std::optional<Intersect> Cylinder::intersect(Ray ray) const{
     if(t.first.has_value()){
         glm::vec4 position = ray.evaluate(t.first.value());
         if(position.y < 0.5f && position.y > -0.5f){
-            replaceIntercept(intersect, Intersect{{false, 1.0f, this}, t.first.value(), getNormal(position)});
+            std::vector<float> blends{1.0f};
+            std::vector<const Shape*> shapeVec;
+            shapeVec.emplace_back(this);
+
+            replaceIntercept(intersect, Intersect{{false, blends, shapeVec}, t.first.value(), getNormal(position)});
         }
     }
     if(t.second.has_value()){
         glm::vec4 position = ray.evaluate(t.second.value());
         if(position.y < 0.5f && position.y > -0.5f){
-            replaceIntercept(intersect, Intersect{{false, 1.0f, this}, t.second.value(), getNormal(position)});
+            std::vector<float> blends{1.0f};
+            std::vector<const Shape*> shapeVec;
+            shapeVec.emplace_back(this);
+
+            replaceIntercept(intersect, Intersect{{false, blends, shapeVec}, t.second.value(), getNormal(position)});
         }
     }
 
@@ -29,13 +37,21 @@ std::optional<Intersect> Cylinder::intersect(Ray ray) const{
     float tb = (-0.5f - ray.p.y) / ray.d.y;
     glm::vec4 bpos = ray.evaluate(tb);
     if(tb > 0 && (bpos.x * bpos.x + bpos.z * bpos.z) <= 0.25f){
-        replaceIntercept(intersect, Intersect{{false, 1.0f, this}, tb, objectToWorldNormal(glm::vec3{0, -1, 0}, this)});
+        std::vector<float> blends{1.0f};
+        std::vector<const Shape*> shapeVec;
+        shapeVec.emplace_back(this);
+
+        replaceIntercept(intersect, Intersect{{false, blends, shapeVec}, tb, objectToWorldNormal(glm::vec3{0, -1, 0}, this)});
     }
 
     float tt = (0.5f - ray.p.y) / ray.d.y;
     glm::vec4 tpos = ray.evaluate(tt);
     if(tt > 0 && (tpos.x * tpos.x + tpos.z * tpos.z) <= 0.25f){
-        replaceIntercept(intersect, Intersect{{false, 1.0f, this}, tt, objectToWorldNormal(glm::vec3{0, 1, 0}, this)});
+        std::vector<float> blends{1.0f};
+        std::vector<const Shape*> shapeVec;
+        shapeVec.emplace_back(this);
+
+        replaceIntercept(intersect, Intersect{{false, blends, shapeVec}, tt, objectToWorldNormal(glm::vec3{0, 1, 0}, this)});
     }
 
     return intersect;

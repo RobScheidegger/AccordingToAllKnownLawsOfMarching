@@ -10,12 +10,11 @@
 
 class Shape; // Forward ref
 
-// Possibly Paired Shape
+// Possibly Plural Shape
 struct PPShape {
-    bool isPair = false;
-    float blendFactor = 1.0f;
-    const Shape* shape1;
-    const Shape* shape2 = nullptr;
+    bool isPlural = false;
+    std::vector<float> blends;
+    std::vector<const Shape*> shapes;
 };
 
 struct Intersect{

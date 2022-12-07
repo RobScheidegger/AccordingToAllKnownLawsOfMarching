@@ -18,13 +18,21 @@ std::optional<Intersect> Cone::intersect(Ray ray) const{
     if(t_top.first.has_value()){
         glm::vec4 top_pos = t_top.first.has_value() ? ray.evaluate(t_top.first.value()) : glm::vec4{};
         if(top_pos.y < 0.5 && top_pos.y > -0.5){
-            replaceIntercept(intersect, Intersect{{false, 1.0f, this}, t_top.first.value(), getNormal(top_pos)});
+            std::vector<float> blends{1.0f};
+            std::vector<const Shape*> shapeVec;
+            shapeVec.emplace_back(this);
+
+            replaceIntercept(intersect, Intersect{{false, blends, shapeVec}, t_top.first.value(), getNormal(top_pos)});
         }
     }
     if(t_top.second.has_value()){
         glm::vec4 top_pos = t_top.second.has_value() ? ray.evaluate(t_top.second.value()) : glm::vec4{};
         if(top_pos.y < 0.5 && top_pos.y > -0.5){
-            replaceIntercept(intersect, Intersect{{false, 1.0f, this}, t_top.second.value(), getNormal(top_pos)});
+            std::vector<float> blends{1.0f};
+            std::vector<const Shape*> shapeVec;
+            shapeVec.emplace_back(this);
+
+            replaceIntercept(intersect, Intersect{{false, blends, shapeVec}, t_top.second.value(), getNormal(top_pos)});
         }
     }
 
@@ -33,7 +41,11 @@ std::optional<Intersect> Cone::intersect(Ray ray) const{
     if(t_bot > 0){
         glm::vec4 bot_pos = ray.evaluate(t_bot);
         if(bot_pos.x * bot_pos.x + bot_pos.z * bot_pos.z <= 0.25f){
-            replaceIntercept(intersect, Intersect{{false, 1.0f, this}, t_bot, objectToWorldNormal(glm::vec3{0,-1, 0}, this)});
+            std::vector<float> blends{1.0f};
+            std::vector<const Shape*> shapeVec;
+            shapeVec.emplace_back(this);
+
+            replaceIntercept(intersect, Intersect{{false, blends, shapeVec}, t_bot, objectToWorldNormal(glm::vec3{0,-1, 0}, this)});
         }
     }
 

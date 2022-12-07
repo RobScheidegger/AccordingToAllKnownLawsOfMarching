@@ -22,10 +22,11 @@ void parseRayMarchSettings(QSettings& settings) {
     rayMarchSettings.enabled = settings.value("Raymarch/enabled").toBool();
     rayMarchSettings.maxSteps = settings.value("Raymarch/max-steps").toInt();
     rayMarchSettings.maxDistance = settings.value("Raymarch/max-distance").toFloat();
-    rayMarchSettings.blendEnabled = settings.value("Raymarch/blend-enabled").toBool();
-    rayMarchSettings.blendFactor = settings.value("Raymarch/blend-factor").toFloat();
+    rayMarchSettings.colorBlendEnabled = settings.value("Raymarch/color-blend-enabled").toBool();
+    rayMarchSettings.smoothMergeEnabled = settings.value("Raymarch/smooth-merge-enabled").toBool();
+    rayMarchSettings.mergeFactor = settings.value("Raymarch/merge-factor").toFloat();
     rayMarchSettings.polyExponent = settings.value("Raymarch/polynomial-exponent").toInt();
-    rayMarchSettings.multipleBlend = settings.value("Raymarch/multiple-blend").toBool();
+    rayMarchSettings.multipleMerge = settings.value("Raymarch/multiple-merge").toBool();
 }
 
 int main(int argc, char *argv[])
