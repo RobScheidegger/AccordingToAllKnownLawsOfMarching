@@ -466,6 +466,7 @@ bool ScenefileReader::parseCameraData(const QDomElement &cameradata) {
                // the camera position from this to get the actual look vector)
                m_cameraData.look.w = 1;
                m_cameraData.useFocusPoint = true;
+               m_cameraData.focus = m_cameraData.look;
                focusFound = true;
            } else {
                // Just store the look vector
@@ -794,6 +795,16 @@ bool ScenefileReader::parsePrimitive(const QDomElement &prim, SceneNode* node) {
                PARSE_ERROR(e);
                return false;
            }
+       }  else if (e.tagName() == "fractal"){
+          if(e.attribute("v") == "mandelbulb"){
+              primitive->fractalType = FractalType::MANDELBULB;
+          } else if (e.attribute("v") == "mandelbox"){
+              primitive->fractalType = FractalType::MANDELBOX;
+          } else if (e.attribute("v") == "serpinski"){
+              primitive->fractalType = FractalType::SERPINSKI;
+          } else {
+              UNSUPPORTED_ELEMENT(e);
+          }
        } else {
            UNSUPPORTED_ELEMENT(e);
            return false;

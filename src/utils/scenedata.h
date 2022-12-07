@@ -5,6 +5,12 @@
 
 #include <glm/glm.hpp>
 
+enum FractalType{
+    MANDELBULB,
+    MANDELBOX,
+    SERPINSKI
+};
+
 // Enum of the types of virtual lights that might be in the scene
 enum class LightType {
     LIGHT_POINT,
@@ -139,6 +145,7 @@ struct SceneMaterial {
 // Struct which contains data for a single primitive in a scene
 struct ScenePrimitive {
    PrimitiveType type;
+   FractalType fractalType = FractalType::MANDELBULB;
    SceneMaterial material;
    std::string   meshfile; // Used for triangle meshes
 

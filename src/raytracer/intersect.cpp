@@ -1,6 +1,7 @@
 #include <iostream>
 #include <memory>
 #include "utils/raymarchfuncs.h"
+#include "utils/raymarchsettings.h"
 
 const static int MAX_NUM_RAYMARCH_STEPS = 4000;
 const static float MAX_RAYMARCH_DISTANCE = 1000.0;
@@ -38,6 +39,10 @@ std::pair<std::optional<float>, std::optional<float>> solveQuadratic(float a, fl
 
 
 std::optional<Intersect> intersect(const RayTraceScene& scene, const Ray& ray){
+    // Check if we want to use raymarching instead
+    if(rayMarchSettings.enabled)
+        return intersectMarch(scene, ray);
+
     std::optional<Intersect> intersection = std::nullopt;
     const std::vector<Shape*>& shapes = scene.getShapes();
 

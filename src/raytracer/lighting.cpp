@@ -121,7 +121,7 @@ glm::vec4 getIllumination(glm::vec4 point, const SceneLightData& light, RayTrace
     return glm::vec4{};
 }
 
-bool inShadow(glm::vec4 point, const SceneLightData& light, const RayTraceScene& scene){
+bool inShadow(glm::vec4 point, const SceneLightData& light, const RayTraceScene& scene, RayTracer& raytracer){
     // If have area light (soft shadow), never assume that we are in a shadow (will be handled later).
     if(light.type == LightType::LIGHT_AREA)
         return false;
@@ -135,7 +135,7 @@ bool inShadow(glm::vec4 point, const SceneLightData& light, const RayTraceScene&
     glm::vec3 shadowIntersection = shadowRay.evaluate(shadowResult->t);
     glm::vec3 point3 = point;
     float shadowTLength = glm::length(shadowIntersection - point3) / lightLength;
-    return shadowResult.has_value()&& shadowResult.value().t >= 0.01f  && (light.type == LightType::LIGHT_DIRECTIONAL || shadowTLength <= 1.0f);
+    return shadowResult.has_value() && shadowResult.value().t >= 0.01f  && (light.type == LightType::LIGHT_DIRECTIONAL || shadowTLength <= 1.0f);
 }
 
 glm::vec4 getTextureColor(const Shape* shape, glm::vec4 position, const SceneMaterial& material, RayTracer& raytracer, float kd){
@@ -213,7 +213,7 @@ SceneColor computePixelLighting(glm::vec4  position,
 
     for (const SceneLightData& light : lights) {
         // Check if there is a shadow with the light source (aka if we trace a ray, it can reach the light source)
-        if(raytracer.m_config.enableShadow && inShadow(position, light, scene))
+        if(raytracer.m_config.enableShadow && inShadow(position, light, scene, raytracer))
             continue;
 
         glm::vec4 direction = getLightDirection(position, light);
