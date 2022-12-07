@@ -688,6 +688,7 @@ bool ScenefileReader::parseTransBlock(const QDomElement &transblock, SceneNode* 
 bool ScenefileReader::parsePrimitive(const QDomElement &prim, SceneNode* node) {
    // Default primitive
    ScenePrimitive* primitive = new ScenePrimitive();
+   primitive->controlPoints.push_back(glm::vec3(0,0,0)); // insert initial null translation (so that position along relative bezier curve begins at the default shape pos)
    SceneMaterial& mat = primitive->material;
    mat.clear();
    primitive->type = PrimitiveType::PRIMITIVE_CUBE;
@@ -777,6 +778,19 @@ bool ScenefileReader::parsePrimitive(const QDomElement &prim, SceneNode* node) {
            }
        } else if (e.tagName() == "blend") {
            if (!parseSingle(e, mat.blend, "v")) {
+               PARSE_ERROR(e);
+               return false;
+           }
+       } else if (e.tagName() == "relativecontrolpoint"){ // Parse the camera bezier curve elements. Added in order
+           glm::vec3 p;
+           if (!parseTriple(e, p.x, p.y, p.z, "x", "y", "z")) {
+               PARSE_ERROR(e);
+               return false;
+           }
+           primitive->useBezierCurves = true;
+           primitive->controlPoints.push_back(p);
+       } else if (e.tagName() == "speed") {
+           if (!parseSingle(e, primitive->movementSpeed, "v")) {
                PARSE_ERROR(e);
                return false;
            }

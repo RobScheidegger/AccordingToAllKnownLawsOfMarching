@@ -38,4 +38,12 @@ void RayTraceScene::updateTemporalData(const float time){
     m_camera.update(time);
 
     // LATER: Update shape CTMs if they are temporal
+
+    // for each shape in scene
+    for (Shape* shape : m_renderData.shapes) {
+        // left-mult orig CTM by relative translation mat4 dep on pos along bezier curve at curr time
+        shape->updatePosition(time);
+    }
+
+
 }
