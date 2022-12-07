@@ -42,7 +42,7 @@ Shape* makeShape(ScenePrimitive& primative, glm::mat4 ctm, float minScale){
         case PrimitiveType::SPHERE_SCENE:
             return new SphereScene(primative, ctm, minScale);
         case PrimitiveType::PRIMITIVE_FRACTAL:
-            return new Fractal(primative, ctm, minScale);
+            return new Fractal(primative, ctm, minScale, primative.fractalType);
     }
     return NULL;
 }
