@@ -61,8 +61,8 @@ public:
         double intpart;
         float bezierTime = modf((double)time * m_primative.movementSpeed, &intpart);
         std::cout << bezierTime << std::endl;
-        glm::vec3 currRelPos = bezier(m_primative.controlPoints, bezierTime);
         translationMatrix[3] = glm::vec4(bezier(m_primative.controlPoints, bezierTime), 1.f);
+        // left-mult orig CTM by relative translation mat4 depending on pos along bezier curve at curr time
         m_ctm = translationMatrix * m_origCtm;
         // update view and normal transformation matrices
         m_ctm_inverse = glm::inverse(m_ctm);
