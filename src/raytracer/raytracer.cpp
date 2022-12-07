@@ -1,5 +1,6 @@
 #include "raytracer.h"
 #include "qimage.h"
+#include "utils/raymarchsettings.h"
 #include "raytracer/lighting.h"
 #include "raytracescene.h"
 #include "lighting.h"
@@ -51,7 +52,7 @@ RGBA RayTracer::raytrace(Ray ray, RayTraceScene& scene){
     const std::vector<SceneLightData> lights = scene.getLights();
 
     std::optional<Intersect> intersection;
-    if (m_config.enableRayMarching) {
+    if (rayMarchSettings.enabled) {
         intersection = intersectMarch(scene, ray);
     } else {
         intersection = intersect(scene, ray);

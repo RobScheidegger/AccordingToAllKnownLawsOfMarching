@@ -6,15 +6,26 @@
 #include <iostream>
 #include "motion/motion.h"
 #include "utils/sceneparser.h"
+#include "utils/raymarchsettings.h"
 #include "raytracer/raytracer.h"
 #include "raytracer/raytracescene.h"
 
-void parseMotionSettings(QSettings& settings, MotionSettings& motionSettings){
+void parseMotionSettings(QSettings& settings, MotionSettings& motionSettings) {
     motionSettings.cleanup = settings.value("Motion/cleanup").toBool();
     motionSettings.enabled = settings.value("Motion/enabled").toBool();
     motionSettings.fps = settings.value("Motion/fps").toInt();
     motionSettings.seconds = settings.value("Motion/seconds").toInt();
     motionSettings.output = settings.value("Motion/output").toString().toStdString();
+}
+
+void parseRayMarchSettings(QSettings& settings) {
+    rayMarchSettings.enabled = settings.value("Raymarch/enabled").toBool();
+    rayMarchSettings.maxSteps = settings.value("Raymarch/max-steps").toInt();
+    rayMarchSettings.maxDistance = settings.value("Raymarch/max-distance").toFloat();
+    rayMarchSettings.blendEnabled = settings.value("Raymarch/blend-enabled").toBool();
+    rayMarchSettings.blendFactor = settings.value("Raymarch/blend-factor").toFloat();
+    rayMarchSettings.polyExponent = settings.value("Raymarch/polynomial-exponent").toInt();
+    rayMarchSettings.multipleBlend = settings.value("Raymarch/multiple-blend").toBool();
 }
 
 int main(int argc, char *argv[])
@@ -67,12 +78,14 @@ int main(int argc, char *argv[])
     rtConfig.enableSuperSample   = settings.value("Feature/super-sample").toBool();
     rtConfig.enableAcceleration  = settings.value("Feature/acceleration").toBool();
     rtConfig.enableDepthOfField  = settings.value("Feature/depthoffield").toBool();
-    rtConfig.enableRayMarching   = settings.value("Feature/raymarching").toBool();
 
     MotionSettings motionSettings;
     parseMotionSettings(settings, motionSettings);
+    parseRayMarchSettings(settings);
+
     RayTracer raytracer{ rtConfig };
     RayTraceScene rtScene{ width, height, metaData };
+
     if(motionSettings.enabled){
         // Handle the motion generation
         cleanupTemp();
@@ -81,8 +94,8 @@ int main(int argc, char *argv[])
         if(motionSettings.cleanup){
              cleanupTemp();
         }
-    } else {
 
+    } else {
         // Note that we're passing `data` as a pointer (to its first element)
         // Recall from Lab 1 that you can access its elements like this: `data[i]`
         raytracer.render(data, rtScene);

@@ -1,7 +1,5 @@
 #include "raymarchfuncs.h"
-
-#define BLEND_FACTOR 0.8
-#define POLY_DEGREE 2
+#include "utils/raymarchsettings.h"
 
 SDFResult minUnion(std::vector<float>& shapeSDFs, const std::vector<Shape*>& shapes) {
     float minDist = std::numeric_limits<float>::infinity();
@@ -45,7 +43,10 @@ SDFResult smoothPolyMin(std::vector<float>& shapeSDFs, const std::vector<Shape*>
     }
 
     if (secondMinDistShape != nullptr) {
-        glm::vec2 blend = smoothPolyMin2(minDist, secondMinDist, BLEND_FACTOR, POLY_DEGREE);
+        glm::vec2 blend = smoothPolyMin2(minDist,
+                                         secondMinDist,
+                                         rayMarchSettings.blendFactor,
+                                         rayMarchSettings.polyExponent);
         return {{true, blend[1], minDistShape, secondMinDistShape}, blend[0]};
     } else {
         return {{false, 1.0f, minDistShape}, minDist};
@@ -62,8 +63,13 @@ SDFResult sceneSDF(glm::vec4 worldSpacePoint, const RayTraceScene& scene) {
         shapeSDFs.push_back( shape->shapeSDF( objectSpacePos) * shape->m_minScale );
     }
 
-    // SDFResult sceneSDFVal = minUnion(shapeSDFs, shapes);
-    SDFResult sceneSDFVal = smoothPolyMin(shapeSDFs, shapes);
+    SDFResult sceneSDFVal;
+    if (rayMarchSettings.blendEnabled) {
+        sceneSDFVal = smoothPolyMin(shapeSDFs, shapes);
+    } else {
+        sceneSDFVal = minUnion(shapeSDFs, shapes);
+    }
+
     return sceneSDFVal;
 }
 
