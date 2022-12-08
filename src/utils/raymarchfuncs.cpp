@@ -69,7 +69,7 @@ SDFResult smoothPolyMinPair(std::vector<float>& shapeSDFs, const std::vector<Sha
 }
 
 SDFResult smoothPolyMinMultiple(std::vector<float>& shapeSDFs, const std::vector<Shape*>& shapes) {
-    if (shapeSDFs.size() > 1) {
+    if (shapeSDFs.size() == 1) {
         // If only 1 element, no blending needed regardless
         std::vector<float> blends{1.0f};
         std::vector<const Shape*> shapeVec;
