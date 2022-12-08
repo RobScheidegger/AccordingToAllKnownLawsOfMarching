@@ -1,15 +1,26 @@
 <scenefile>
 	<globaldata>
-		<diffusecoeff v="0.5"/>
+		<diffusecoeff v="0.9"/>
 		<specularcoeff v="0.5"/>
-		<ambientcoeff v="0.5"/>
+		<ambientcoeff v="0.9"/>
 	</globaldata>
 
 	<cameradata>
-		<pos x="1" y="3" z="3"/>
-		<focus x="0" y="0" z="0"/>
+		<pos x="0" y="3.2" z="3"/>
+		<focus x="1" y="0" z="0"/>
 		<up x="0" y="1" z="0"/>
 		<heightangle v="30"/>
+		<curve x="0" y="3.2" z="3.7"/>
+		<curve x="0" y="2" z="3"/>
+		<curve x="3.5" y="2" z="0"/>
+		<curve x="0" y="2" z="-4"/>
+		<curve x="-4.5" y="2" z="0"/>
+		<curve x="0" y="1.8" z="4"/>
+		<curve x="3.5" y="1.6" z="0"/>
+		<curve x="0" y="1.4" z="-3"/>
+		<curve x="-3" y="1.2" z="0"/>
+		<curve x="0" y="1" z="4"/>
+		<speed v="0.05" />
 	</cameradata>
 
 	<lightdata>
@@ -22,7 +33,7 @@
 	<object type="tree" name="root">
 		<transblock>
 			<object type="primitive" name="fractal" >
-				<diffuse r="1" g="0" b="0"/>
+				<diffuse r="0.5" g="0.8" b="0.9"/>
 				<specular r="1.0" g="1.0" b="1.0"/>
 				<shininess v="25.0"/>
 			</object>
