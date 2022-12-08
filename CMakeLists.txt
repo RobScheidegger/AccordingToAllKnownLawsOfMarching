@@ -35,6 +35,7 @@ add_executable(${PROJECT_NAME}
   ./src/utils/scenefilereader.cpp
   ./src/utils/sceneparser.cpp
   ./src/utils/raymarchfuncs.cpp
+  ./src/utils/raymarchsettings.cpp
   ./src/raytracer/intersect.cpp
   ./src/raytracer/lighting.cpp
   ./src/utils/bezierfuncs.cpp
@@ -50,6 +51,7 @@ add_executable(${PROJECT_NAME}
   ./src/utils/scenefilereader.h
   ./src/utils/sceneparser.h
   ./src/utils/raymarchfuncs.h
+  ./src/utils/raymarchsettings.h
   ./src/raytracer/intersect.h
   ./src/raytracer/lighting.h 
   ./src/utils/bezierfuncs.h

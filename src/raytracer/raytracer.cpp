@@ -1,5 +1,6 @@
 #include "raytracer.h"
 #include "qimage.h"
+#include "utils/raymarchsettings.h"
 #include "raytracer/lighting.h"
 #include "raytracescene.h"
 #include "lighting.h"
@@ -51,17 +52,13 @@ RGBA RayTracer::raytrace(Ray ray, RayTraceScene& scene){
     const std::vector<SceneLightData> lights = scene.getLights();
 
     std::optional<Intersect> intersection;
-    if (m_config.enableRayMarching) {
-        intersection = intersectMarch(scene, ray);
-    } else {
-        intersection = intersect(scene, ray);
-    }
+
+    intersection = intersect(scene, ray);
 
     if(intersection.has_value()){
         Intersect& inter = intersection.value();
         glm::vec4 point = ray.evaluate(inter.t);
         glm::vec4 directionToCamera = camera.getPosition() - point;
-
 
         return toRGBA(computePixelLighting(point, glm::vec4{inter.normal, 0}, directionToCamera, inter.shape, 0, scene, *this));
     } else {
@@ -81,6 +78,14 @@ void RayTracer::render(RGBA *imageData, RayTraceScene& scene, const float time) 
     #pragma omp parallel for
     for(int i = 0; i < scene.width(); i++){
         for(int j = 0; j < scene.height(); j++){
+            /*
+            if (i < 253 || j < 394) {
+                continue;
+            }
+            if (i == 253 && j == 394) {
+                std::cout << "desired pixel" << std::endl;
+            }
+            */
             const int idx = j * scene.width() + i;
             Ray ray = makeRay(camera, scene, i, j);
             if(m_config.enableSuperSample){

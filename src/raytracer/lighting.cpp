@@ -121,7 +121,7 @@ glm::vec4 getIllumination(glm::vec4 point, const SceneLightData& light, RayTrace
     return glm::vec4{};
 }
 
-bool inShadow(glm::vec4 point, const SceneLightData& light, const RayTraceScene& scene){
+bool inShadow(glm::vec4 point, const SceneLightData& light, const RayTraceScene& scene, RayTracer& raytracer){
     // If have area light (soft shadow), never assume that we are in a shadow (will be handled later).
     if(light.type == LightType::LIGHT_AREA)
         return false;
@@ -135,7 +135,7 @@ bool inShadow(glm::vec4 point, const SceneLightData& light, const RayTraceScene&
     glm::vec3 shadowIntersection = shadowRay.evaluate(shadowResult->t);
     glm::vec3 point3 = point;
     float shadowTLength = glm::length(shadowIntersection - point3) / lightLength;
-    return shadowResult.has_value()&& shadowResult.value().t >= 0.01f  && (light.type == LightType::LIGHT_DIRECTIONAL || shadowTLength <= 1.0f);
+    return shadowResult.has_value() && shadowResult.value().t >= 0.01f  && (light.type == LightType::LIGHT_DIRECTIONAL || shadowTLength <= 1.0f);
 }
 
 glm::vec4 getTextureColor(const Shape* shape, glm::vec4 position, const SceneMaterial& material, RayTracer& raytracer, float kd){
@@ -173,22 +173,30 @@ SceneColor computePixelLighting(glm::vec4  position,
            const RayTraceScene& scene,
            RayTracer& raytracer) {
 
-    if (shape.isPair) {
-        SceneColor color1 = computePixelLighting(position,
-                                                 normal,
-                                                 directionToCamera,
-                                                 {false, 1.0f, shape.shape1},
-                                                 recursiveDepth,
-                                                 scene,
-                                                 raytracer);
-        SceneColor color2 = computePixelLighting(position,
-                                                 normal,
-                                                 directionToCamera,
-                                                 {false, 1.0f, shape.shape2},
-                                                 recursiveDepth,
-                                                 scene,
-                                                 raytracer);
-        return shape.blendFactor * color2 + (1 - shape.blendFactor) * color1;
+    if (shape.isPlural) {
+        std::vector<SceneColor> colors;
+        for (const Shape* s : shape.shapes) {
+            std::vector<float> blends{1.0f};
+            std::vector<const Shape*> shapeVec;
+            shapeVec.emplace_back(s);
+
+            SceneColor currColor = computePixelLighting(position,
+                                                        normal,
+                                                        directionToCamera,
+                                                        {false, blends, shapeVec},
+                                                        recursiveDepth,
+                                                        scene,
+                                                        raytracer);
+
+            colors.push_back(currColor);
+        }
+
+        SceneColor finalSceneColor = glm::vec4(0.0f);
+        for (int i = 0; i < colors.size(); i++) {
+            finalSceneColor += shape.blends[i] * colors[i];
+        }
+
+        return finalSceneColor;
     }
 
     // Normalizing directions
@@ -199,13 +207,13 @@ SceneColor computePixelLighting(glm::vec4  position,
     glm::vec4 illumination(0, 0, 0, 1);
     const std::vector<SceneLightData>& lights = scene.getLights();
     const SceneGlobalData& globalData = scene.getGlobalData();
-    const SceneMaterial& material = shape.shape1->m_primative.material;
+    const SceneMaterial& material = shape.shapes[0]->m_primative.material;
     illumination += globalData.ka * material.cAmbient;
-    glm::vec4 diffuseColor = getTextureColor(shape.shape1, position, material, raytracer, globalData.kd);
+    glm::vec4 diffuseColor = getTextureColor(shape.shapes[0], position, material, raytracer, globalData.kd);
 
     for (const SceneLightData& light : lights) {
         // Check if there is a shadow with the light source (aka if we trace a ray, it can reach the light source)
-        if(raytracer.m_config.enableShadow && inShadow(position, light, scene))
+        if(raytracer.m_config.enableShadow && inShadow(position, light, scene, raytracer))
             continue;
 
         glm::vec4 direction = getLightDirection(position, light);

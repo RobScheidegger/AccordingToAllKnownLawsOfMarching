@@ -42,7 +42,6 @@ public:
         bool enableSuperSample   = false;
         bool enableAcceleration  = false;
         bool enableDepthOfField  = false;
-        bool enableRayMarching   = false;
     };
 
 public:
