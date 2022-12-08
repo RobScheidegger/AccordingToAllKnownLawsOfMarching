@@ -69,6 +69,14 @@ SDFResult smoothPolyMinPair(std::vector<float>& shapeSDFs, const std::vector<Sha
 }
 
 SDFResult smoothPolyMinMultiple(std::vector<float>& shapeSDFs, const std::vector<Shape*>& shapes) {
+    if (shapeSDFs.size() > 1) {
+        // If only 1 element, no blending needed regardless
+        std::vector<float> blends{1.0f};
+        std::vector<const Shape*> shapeVec;
+        shapeVec.push_back(shapes[0]);
+        return {{false, blends, shapeVec}, shapeSDFs[0]};
+    }
+
     std::vector<std::pair<float, const Shape*>> shapeDists;
 
     // Sort the shapes by distance (ascending order)
@@ -81,56 +89,47 @@ SDFResult smoothPolyMinMultiple(std::vector<float>& shapeSDFs, const std::vector
     sort(shapeDists.begin(), shapeDists.end());
     reverse(shapeDists.begin(), shapeDists.end());
 
-    if (shapeSDFs.size() > 1) {
-        std::vector<float> blends;
-        std::vector<const Shape*> shapeVec;
-        shapeVec.push_back(shapeDists[0].second);
+    std::vector<float> blends;
+    std::vector<const Shape*> shapeVec;
+    shapeVec.push_back(shapeDists[0].second);
 
-        // Merge in sorted order
-        float currDist = shapeDists[0].first;
-        for (int i = 1; i < shapeDists.size(); i++) {
-            glm::vec2 blend = smoothPolyMin2(currDist,
-                                   shapeDists[i].first,
-                                   rayMarchSettings.mergeFactor,
-                                   rayMarchSettings.polyExponent);
-            currDist = blend[0];
-            shapeVec.push_back(shapeDists[i].second);
+    // Merge in sorted order
+    float currDist = shapeDists[0].first;
+    for (int i = 1; i < shapeDists.size(); i++) {
+        glm::vec2 blend = smoothPolyMin2(currDist,
+                               shapeDists[i].first,
+                               rayMarchSettings.mergeFactor,
+                               rayMarchSettings.polyExponent);
+        currDist = blend[0];
+        shapeVec.push_back(shapeDists[i].second);
 
-            // If no color blending, use the color of the closest object only
-            if (rayMarchSettings.colorBlendEnabled) {
-                blends.push_back(1.0f - blend[1]);
-            } else {
-                blends.push_back((i == 1) ? 1.0f : 0.0f);
-            }
-        }
-
-        // Merge the blends if blending enabled
+        // If no color blending, use the color of the closest object only
         if (rayMarchSettings.colorBlendEnabled) {
-            reverse(blends.begin(), blends.end());
-            std::vector<float> finalBlends;
-            float sum = 0.0f;
-            float currBlend = 1.0f;
-            for (int i = 0; i < blends.size(); i++) {
-                finalBlends.push_back(blends[i] * currBlend);
-                sum += blends[i] * currBlend;
-                currBlend *= 1.0f - blends[i];
-            }
-            reverse(finalBlends.begin(), finalBlends.end());
-            finalBlends.push_back(1.0f - sum);
-
-            return {{true, finalBlends, shapeVec}, currDist};
-
+            blends.push_back(1.0f - blend[1]);
         } else {
-            blends.push_back(0.0f);
-            return {{true, blends, shapeVec}, currDist};
+            blends.push_back((i == 1) ? 1.0f : 0.0f);
         }
+    }
+
+    // Merge the blends if blending enabled
+    if (rayMarchSettings.colorBlendEnabled) {
+        // reverse(blends.begin(), blends.end());
+        std::vector<float> finalBlends;
+        float sum = 0.0f;
+        float currBlend = 1.0f;
+        for (int i = 0; i < blends.size(); i++) {
+            finalBlends.push_back(blends[i] * currBlend);
+            sum += blends[i] * currBlend;
+            currBlend *= 1.0f - blends[i];
+        }
+        // reverse(finalBlends.begin(), finalBlends.end());
+        finalBlends.push_back(1.0f - sum);
+
+        return {{true, finalBlends, shapeVec}, currDist};
 
     } else {
-        // If only 1 element, no blending needed regardless
-        std::vector<float> blends{1.0f};
-        std::vector<const Shape*> shapeVec;
-        shapeVec.push_back(shapeDists[0].second);
-        return {{false, blends, shapeVec}, shapeDists[0].first};
+        blends.push_back(0.0f);
+        return {{true, blends, shapeVec}, currDist};
     }
 }
 
