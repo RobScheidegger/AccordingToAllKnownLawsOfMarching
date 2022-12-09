@@ -75,17 +75,36 @@ void RayTracer::render(RGBA *imageData, RayTraceScene& scene, const float time) 
 
     const Camera& camera = scene.getCamera();
 
+    // Data for progress bar
+    int barNumChars = 50;
+    float progressPerPix = 1.0f / (float)(scene.width() * scene.height());
+
+    float currProgress = 0.0;
+    int lastProgressInt = -1;
+
     #pragma omp parallel for
     for(int i = 0; i < scene.width(); i++){
         for(int j = 0; j < scene.height(); j++){
-            /*
-            if (i < 253 || j < 394) {
-                continue;
+            // Update progress bar
+            int pos = barNumChars * currProgress;
+            if (pos != lastProgressInt) {
+                std::cout << "[";
+                for (int i = 0; i < barNumChars; ++i) {
+                    if (i < pos) {
+                        std::cout << "=";
+                    } else if (i == pos){
+                        std::cout << ">";
+                    } else {
+                        std::cout << " ";
+                    }
+                }
+
+                std::cout << "] " << int(currProgress * 100.0) << " %\r";
+                std::cout.flush();
+
+                lastProgressInt = pos;
             }
-            if (i == 253 && j == 394) {
-                std::cout << "desired pixel" << std::endl;
-            }
-            */
+
             const int idx = j * scene.width() + i;
             Ray ray = makeRay(camera, scene, i, j);
             if(m_config.enableSuperSample){
@@ -119,6 +138,8 @@ void RayTracer::render(RGBA *imageData, RayTraceScene& scene, const float time) 
             } else {
                 imageData[idx] = raytrace(ray, scene);
             }
+
+            currProgress += progressPerPix;
         }
     }
 }
