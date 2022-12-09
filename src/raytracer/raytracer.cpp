@@ -82,8 +82,8 @@ void RayTracer::render(RGBA *imageData, RayTraceScene& scene, const float time) 
     float currProgress = 0.0;
     int lastProgressInt = -1;
 
-    #pragma omp parallel for
-    for(int i = 0; i < scene.width(); i++){
+    #pragma omp parallel for if (m_config.enableParallelism)
+    for (int i = 0; i < scene.width(); i++){
         for(int j = 0; j < scene.height(); j++){
             // Update progress bar
             int pos = barNumChars * currProgress;
