@@ -87,7 +87,7 @@ SDFResult smoothPolyMinMultiple(std::vector<float>& shapeSDFs, const std::vector
     // Default sort is ascending order by first element;
     // reverse to get descending order
     sort(shapeDists.begin(), shapeDists.end());
-    reverse(shapeDists.begin(), shapeDists.end());
+    // reverse(shapeDists.begin(), shapeDists.end());
 
     std::vector<float> blends;
     std::vector<const Shape*> shapeVec;
