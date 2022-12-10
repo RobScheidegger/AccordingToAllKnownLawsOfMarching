@@ -7,6 +7,9 @@
 #include <iostream>
 #include <chrono>
 #include <cstdint>
+#include <mutex>
+
+std::mutex progressBarMutex;
 
 uint64_t timeSinceEpochMillisec() {
   return duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
@@ -90,10 +93,11 @@ void RayTracer::render(RGBA *imageData, RayTraceScene& scene, const float time) 
     int lastProgressInt = -1;
     uint64_t lastUpdateTime = timeSinceEpochMillisec();
 
-    #pragma omp parallel for if (m_config.enableParallelism)
+    #pragma omp parallel for collapse(2) if (m_config.enableParallelism)
     for (int i = 0; i < scene.width(); i++){
         for(int j = 0; j < scene.height(); j++){
             // Update progress bar
+            progressBarMutex.lock();
             int pos = barNumChars * currProgress;
             if ((pos != lastProgressInt) && (timeSinceEpochMillisec() - lastUpdateTime >= pauseTimeMs)) {
                 std::cout << "[";
@@ -113,6 +117,7 @@ void RayTracer::render(RGBA *imageData, RayTraceScene& scene, const float time) 
                 lastProgressInt = pos;
                 lastUpdateTime = timeSinceEpochMillisec();
             }
+            progressBarMutex.unlock();
 
             const int idx = j * scene.width() + i;
             Ray ray = makeRay(camera, scene, i, j);
