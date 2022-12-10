@@ -203,12 +203,16 @@ SceneColor computePixelLighting(glm::vec4  position,
     normal            = glm::normalize(normal);
     directionToCamera = glm::normalize(directionToCamera);
 
+    // std::cout << normal[0] << ", " << normal[1] << ", " << normal[2] << std::endl;
+    // std::cout << directionToCamera[0] << ", " << directionToCamera[1] << ", " << directionToCamera[2] << std::endl;
+
     // Output illumination (we can ignore opacity)
     glm::vec4 illumination(0, 0, 0, 1);
     const std::vector<SceneLightData>& lights = scene.getLights();
     const SceneGlobalData& globalData = scene.getGlobalData();
     const SceneMaterial& material = shape.shapes[0]->m_primative.material;
     illumination += globalData.ka * material.cAmbient;
+    // std::cout << illumination[0] << ", " << illumination[1] << ", " << illumination[2] << std::endl;
     glm::vec4 diffuseColor = getTextureColor(shape.shapes[0], position, material, raytracer, globalData.kd);
 
     for (const SceneLightData& light : lights) {
@@ -228,9 +232,11 @@ SceneColor computePixelLighting(glm::vec4  position,
             continue;
 
         illumination += luminance * diffuseColor * std::max(0.0f, glm::dot(normal, di));
+        // std::cout << illumination[0] << ", " << illumination[1] << ", " << illumination[2] << std::endl;
 
         illumination += luminance * globalData.ks * material.cSpecular
                 * std::max(0.0f, (float)std::pow(glm::dot(glm::normalize(ri), directionToCamera), material.shininess));
+        // std::cout << illumination[0] << ", " << illumination[1] << ", " << illumination[2] << std::endl;
     }
 
     // Reflections

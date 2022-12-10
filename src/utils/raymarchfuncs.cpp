@@ -106,31 +106,31 @@ SDFResult smoothPolyMinMultiple(std::vector<float>& shapeSDFs, const std::vector
         // If no color blending, use the color of the closest object only
         if (rayMarchSettings.colorBlendEnabled) {
             blends.push_back(1.0f - blend[1]);
-        } else {
-            blends.push_back((i == 1) ? 1.0f : 0.0f);
         }
     }
 
-    // Merge the blends if blending enabled
-    if (rayMarchSettings.colorBlendEnabled) {
-        // reverse(blends.begin(), blends.end());
-        std::vector<float> finalBlends;
-        float sum = 0.0f;
-        float currBlend = 1.0f;
-        for (int i = 0; i < blends.size(); i++) {
-            finalBlends.push_back(blends[i] * currBlend);
-            sum += blends[i] * currBlend;
-            currBlend *= 1.0f - blends[i];
-        }
-        // reverse(finalBlends.begin(), finalBlends.end());
-        finalBlends.push_back(1.0f - sum);
+    // If blend is not enabled, we can remove all of the other shapes.
+    if (!rayMarchSettings.colorBlendEnabled) {
+        std::vector<float> singleBlend{1.0f};
+        std::vector<const Shape*> singleShapeVec;
+        singleShapeVec.push_back(shapeVec[0]);
 
-        return {{true, finalBlends, shapeVec}, currDist};
-
-    } else {
-        blends.push_back(0.0f);
-        return {{true, blends, shapeVec}, currDist};
+        return {{true, singleBlend, singleShapeVec}, currDist};
     }
+
+    // Merge the blends
+    std::vector<float> finalBlends;
+    float sum = 0.0f;
+    float currBlend = 1.0f;
+    for (int i = 0; i < blends.size(); i++) {
+        finalBlends.push_back(blends[i] * currBlend);
+        sum += blends[i] * currBlend;
+        currBlend *= 1.0f - blends[i];
+    }
+    finalBlends.push_back(1.0f - sum);
+
+    return {{true, finalBlends, shapeVec}, currDist};
+
 }
 
 SDFResult sceneSDF(glm::vec4 worldSpacePoint, const RayTraceScene& scene) {
@@ -155,7 +155,7 @@ SDFResult sceneSDF(glm::vec4 worldSpacePoint, const RayTraceScene& scene) {
 }
 
 glm::vec3 worldSpaceNormal(glm::vec4 worldSpacePoint, const RayTraceScene& scene) {
-    const float smallStep = 0.0001;
+    const float smallStep = 0.01;
 
     float gradient_x = sceneSDF(worldSpacePoint + glm::vec4(smallStep, 0.0f, 0.0f, 0.0f), scene).sceneSDFVal
             - sceneSDF(worldSpacePoint - glm::vec4(smallStep, 0.0f, 0.0f, 0.0f), scene).sceneSDFVal;

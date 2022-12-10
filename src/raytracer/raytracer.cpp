@@ -95,8 +95,7 @@ void RayTracer::render(RGBA *imageData, RayTraceScene& scene, const float time) 
         for(int j = 0; j < scene.height(); j++){
             // Update progress bar
             int pos = barNumChars * currProgress;
-            uint64_t currTime = timeSinceEpochMillisec();
-            if ((pos != lastProgressInt) && (currTime - lastUpdateTime >= pauseTimeMs)) {
+            if ((pos != lastProgressInt) && (timeSinceEpochMillisec() - lastUpdateTime >= pauseTimeMs)) {
                 std::cout << "[";
                 for (int i = 0; i < barNumChars; ++i) {
                     if (i < pos) {
