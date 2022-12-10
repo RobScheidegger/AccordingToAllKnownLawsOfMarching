@@ -240,7 +240,7 @@ SceneColor computePixelLighting(glm::vec4  position,
     }
 
     // Reflections
-    if(raytracer.m_config.enableReflection && recursiveDepth < RECURSIVE_DEPTH_LIMIT && glm::length(material.cReflective) != 0){
+    if(raytracer.m_config.enableReflection && recursiveDepth < RECURSIVE_DEPTH_LIMIT && !isClose(glm::length(material.cReflective), 0)){
         glm::vec4 reflectedDirection = 2 * std::max(0.0f, glm::dot(normal, directionToCamera)) * normal - directionToCamera;
 
         Ray reflectedRay{position, reflectedDirection};
