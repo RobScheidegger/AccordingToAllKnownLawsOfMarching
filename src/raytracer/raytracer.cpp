@@ -5,6 +5,12 @@
 #include "raytracescene.h"
 #include "lighting.h"
 #include <iostream>
+#include <chrono>
+#include <cstdint>
+
+uint64_t timeSinceEpochMillisec() {
+  return duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+}
 
 RayTracer::RayTracer(Config config) :
     m_config(config)
@@ -77,17 +83,20 @@ void RayTracer::render(RGBA *imageData, RayTraceScene& scene, const float time) 
 
     // Data for progress bar
     int barNumChars = 50;
+    int pauseTimeMs = 700;
     float progressPerPix = 1.0f / (float)(scene.width() * scene.height());
 
     float currProgress = 0.0;
     int lastProgressInt = -1;
+    uint64_t lastUpdateTime = timeSinceEpochMillisec();
 
     #pragma omp parallel for if (m_config.enableParallelism)
     for (int i = 0; i < scene.width(); i++){
         for(int j = 0; j < scene.height(); j++){
             // Update progress bar
             int pos = barNumChars * currProgress;
-            if (pos != lastProgressInt) {
+            uint64_t currTime = timeSinceEpochMillisec();
+            if ((pos != lastProgressInt) && (currTime - lastUpdateTime >= pauseTimeMs)) {
                 std::cout << "[";
                 for (int i = 0; i < barNumChars; ++i) {
                     if (i < pos) {
@@ -103,6 +112,7 @@ void RayTracer::render(RGBA *imageData, RayTraceScene& scene, const float time) 
                 std::cout.flush();
 
                 lastProgressInt = pos;
+                lastUpdateTime = timeSinceEpochMillisec();
             }
 
             const int idx = j * scene.width() + i;
