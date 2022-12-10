@@ -222,7 +222,7 @@ SceneColor computePixelLighting(glm::vec4  position,
 
         glm::vec4 direction = getLightDirection(position, light);
         glm::vec4 di = -glm::normalize(direction);
-        glm::vec4 ri = 2 * std::max(0.0f, glm::dot(normal, di)) * normal - di;
+        glm::vec4 ri = (2 * glm::dot(normal, di) * normal) - di;
 
         // Gets the luminance of light at that point (including attenuation)
         glm::vec4 luminance = getIllumination(position, light, raytracer, scene);
@@ -235,7 +235,7 @@ SceneColor computePixelLighting(glm::vec4  position,
         // std::cout << illumination[0] << ", " << illumination[1] << ", " << illumination[2] << std::endl;
 
         illumination += luminance * globalData.ks * material.cSpecular
-                * std::max(0.0f, (float)std::pow(glm::dot(glm::normalize(ri), directionToCamera), material.shininess));
+                * (float)std::pow(std::max(0.0f, glm::dot(glm::normalize(ri), directionToCamera)), material.shininess);
         // std::cout << illumination[0] << ", " << illumination[1] << ", " << illumination[2] << std::endl;
     }
 
