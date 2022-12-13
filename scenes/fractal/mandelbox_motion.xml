@@ -10,8 +10,11 @@
 		<focus x="0" y="0" z="0"/>
 		<up x="0" y="1" z="0"/>
 		<heightangle v="30"/>
+		<curve x="10" y="10" z="10" />
 		<curve x="10" y="10" z="0" />
-		<curve x="0" y="3.2" z="2" />
+		<curve x="5" y="5" z="0" />
+		<curve x="3.2" y="3.7" z="0" />
+		<curve x="2" y="3" z="0" />
 		<speed v="0.2" />
 		<!--
 			<curve x="0" y="3.2" z="3.7"/>

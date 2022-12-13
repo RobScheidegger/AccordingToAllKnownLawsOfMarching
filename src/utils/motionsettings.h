@@ -28,3 +28,4 @@ struct MotionSettings {
     std::string output;
 };
 
+extern MotionSettings motionSettings;

@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
     rtConfig.enableAcceleration  = settings.value("Feature/acceleration").toBool();
     rtConfig.enableDepthOfField  = settings.value("Feature/depthoffield").toBool();
 
-    MotionSettings motionSettings;
+
     parseMotionSettings(settings, motionSettings);
     parseRayMarchSettings(settings);
 

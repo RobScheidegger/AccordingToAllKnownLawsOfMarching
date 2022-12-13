@@ -60,17 +60,19 @@ glm::vec3 box (glm::vec3 z) {
   return glm::clamp(z, -1.0f, 1.0f) * 2.0f - z;
 }
 
-const int Iterations = 10;
-const float Scale = 1.5;
+const int ITERATIONS = 30;
+const float SCALE = 2.5;
 
 float Fractal::mandelboxSDF(glm::vec3 pos) const{
+
+    /*
     glm::vec3 c = pos;
     glm::vec3 seed = glm::vec3{0,0,0};//pos;
 
     float DEfactor = 1.0;
-    float fixedRadius = 1;
+    float fixedRadius = 2;
     float fR2 = fixedRadius * fixedRadius;
-    float minRadius = .5;
+    float minRadius = 1;
     float mR2 = minRadius * minRadius;
     glm::vec3 z = seed;
 
@@ -105,6 +107,34 @@ float Fractal::mandelboxSDF(glm::vec3 pos) const{
     float r = glm::dot(z,z);
     return glm::sqrt(r) / glm::abs(DEfactor);
     //return 0.25*log(r)*sqrt(r)/glm::abs(DEfactor);
+    */
+    const float c1 = glm::abs(SCALE - 1.0);
+    const float c2 = glm::pow(glm::abs(SCALE), 1.0 - ITERATIONS);
+    const glm::vec3 c = pos;
+    glm::vec3 v = pos;
+    float dr = 1.0;
+
+    for (int i = 0; i < ITERATIONS; i++) {
+       glm::vec3 old = v;
+       v = glm::max(v, glm::vec3{-1.0, -1.0, -1.0}); //vec3.max(v, v, vec3.fromValues(-1.0, -1.0, -1.0));
+       v = glm::min(v, glm::vec3{1.0, 1.0, 1.0});//vec3.min(v, v, vec3.fromValues(+1.0, +1.0, +1.0));
+       v = v * 2.0f;// vec3.scale(v, v, 2.0);
+       v = v - old; // vec3.sub(v, v, old);
+
+       float mag = glm::dot(v,v); //var mag = vec3.squaredLength(v);
+       if (mag < 0.25) {
+           v *= 4.0f;
+           dr = dr * 4.0;
+       } else if (mag < 1.0) {
+           v *= 1/mag;
+           dr = dr / mag;
+       }
+
+       v = SCALE * v + c; //vec3.scaleAndAdd(v, c, v, SCALE);
+       dr = dr * glm::abs(SCALE) + 1.0;
+   }
+
+   return (glm::length(v) - c1) / dr - c2;
 }
 
 float Fractal::serpinskiSDF(glm::vec3 z) const{

@@ -30,6 +30,7 @@ add_executable(${PROJECT_NAME}
   
   ./src/motion/motion.cpp
   ./src/camera/camera.cpp
+  ./src/utils/motionsettings.cpp
   ./src/raytracer/raytracer.cpp
   ./src/raytracer/raytracescene.cpp
   ./src/utils/scenefilereader.cpp
