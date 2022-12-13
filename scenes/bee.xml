@@ -26,15 +26,17 @@
 				<transblock>
 					<scale x="1" y="1" z="1.7"/>
 					<object type="primitive" name="sphere" >
-						<ambient r="1" g="0.8" b="0"/>
+						<texture file="scenes/beetexture.png" u="8" v="8"/>
+						<blend v="1.0"/>
+						<ambient r="0" g="0" b="0"/>
 						<diffuse r="1" g="0.8" b="0"/>
 						<specular r="0" g="0" b="0"/>
 						<shininess v="15"/>
 					</object>
 				</transblock>
 				<transblock>
-					<scale x="0.5" y="0.5" z="0.5"/>
-					<translate x="0" y="0.1" z="0.5"/>
+					<scale x="0.7" y="0.7" z="0.7"/>
+					<translate x="0" y="0.4" z="1.5"/>
 					<object type="primitive" name="sphere" >
 						<ambient r="0" g="0" b="0"/>
 						<diffuse r="0" g="0" b="0"/>
@@ -43,10 +45,21 @@
 					</object>
 				</transblock>
 				<transblock>
+					<scale x="0.1" y="0.1" z="0.5"/>
+					<translate x="0" y="0" z="-2.6"/>
 					<rotate x="1" y="0" z="0" angle="270"/>
-					<scale x="0.5" y="0.5" z="0.5"/>
-					<translate x="0" y="0.1" z="-0.4"/>
 					<object type="primitive" name="cone" >
+						<ambient r="0" g="0" b="0"/>
+						<diffuse r="0" g="0" b="0"/>
+						<specular r="0" g="0" b="0"/>
+						<shininess v="15"/>
+					</object>
+				</transblock>
+				<transblock>
+					<scale x="0.1" y="0.1" z="0.5"/>
+					<translate x="15" y="15" z="0"/>
+					<rotate x="0" y="0" z="1" angle="0"/>
+					<object type="primitive" name="cylinder" >
 						<ambient r="0" g="0" b="0"/>
 						<diffuse r="0" g="0" b="0"/>
 						<specular r="0" g="0" b="0"/>
