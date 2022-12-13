@@ -54,6 +54,8 @@ Ray makeRay(const Camera& camera, const RayTraceScene& scene, const int i, const
     return Ray{peye, dworld};
 }
 
+static const RGBA DEFAULT_COLOR = RGBA{0,0,0};
+
 RGBA RayTracer::raytrace(Ray ray, RayTraceScene& scene){
 
     const Camera& camera = scene.getCamera();
@@ -71,7 +73,7 @@ RGBA RayTracer::raytrace(Ray ray, RayTraceScene& scene){
 
         return toRGBA(computePixelLighting(point, glm::vec4{inter.normal, 0}, directionToCamera, inter.shape, 0, scene, *this));
     } else {
-        return RGBA{0,0,0};
+        return DEFAULT_COLOR;
     }
 }
 
