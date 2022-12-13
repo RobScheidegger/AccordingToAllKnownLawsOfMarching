@@ -64,50 +64,6 @@ const int ITERATIONS = 30;
 const float SCALE = 2.5;
 
 float Fractal::mandelboxSDF(glm::vec3 pos) const{
-
-    /*
-    glm::vec3 c = pos;
-    glm::vec3 seed = glm::vec3{0,0,0};//pos;
-
-    float DEfactor = 1.0;
-    float fixedRadius = 2;
-    float fR2 = fixedRadius * fixedRadius;
-    float minRadius = 1;
-    float mR2 = minRadius * minRadius;
-    glm::vec3 z = seed;
-
-    float dr = 1.0;
-    for (int n = 0; n < Iterations; n++) {
-        //z = glm::clamp(z, -1.0f, 1.0f);
-        if (z.x > 1.0)         z.x = 2.0 - z.x;
-        else if (z.x < -1.0)   z.x = -2.0 - z.x;
-
-        if (z.y > 1.0)         z.y = 2.0 - z.y;
-        else if (z.y < -1.0)   z.y = -2.0 - z.y;
-
-        if (z.z > 1.0)         z.z = 2.0 - z.z;
-        else if (z.z < -1.0)   z.z = -2.0 - z.z;
-
-        float r2 = glm::dot(z,z);
-
-        if (r2 < mR2)
-        {
-            z *= fR2 / mR2;
-            DEfactor *= fR2 / mR2;
-        }
-        else if (r2 < fR2)
-        {
-            z *= fR2 / r2;
-            DEfactor *= fR2 / r2;
-        }
-
-        z = z * glm::abs(Scale) + c;
-        DEfactor = glm::abs(Scale) * DEfactor; //+ 1;
-    }
-    float r = glm::dot(z,z);
-    return glm::sqrt(r) / glm::abs(DEfactor);
-    //return 0.25*log(r)*sqrt(r)/glm::abs(DEfactor);
-    */
     const float c1 = glm::abs(SCALE - 1.0);
     const float c2 = glm::pow(glm::abs(SCALE), 1.0 - ITERATIONS);
     const glm::vec3 c = pos;
@@ -116,12 +72,12 @@ float Fractal::mandelboxSDF(glm::vec3 pos) const{
 
     for (int i = 0; i < ITERATIONS; i++) {
        glm::vec3 old = v;
-       v = glm::max(v, glm::vec3{-1.0, -1.0, -1.0}); //vec3.max(v, v, vec3.fromValues(-1.0, -1.0, -1.0));
-       v = glm::min(v, glm::vec3{1.0, 1.0, 1.0});//vec3.min(v, v, vec3.fromValues(+1.0, +1.0, +1.0));
-       v = v * 2.0f;// vec3.scale(v, v, 2.0);
-       v = v - old; // vec3.sub(v, v, old);
+       v = glm::max(v, glm::vec3{-1.0, -1.0, -1.0});
+       v = glm::min(v, glm::vec3{1.0, 1.0, 1.0});
+       v = v * 2.0f;
+       v = v - old;
 
-       float mag = glm::dot(v,v); //var mag = vec3.squaredLength(v);
+       float mag = glm::dot(v,v);
        if (mag < 0.25) {
            v *= 4.0f;
            dr = dr * 4.0;
@@ -130,7 +86,7 @@ float Fractal::mandelboxSDF(glm::vec3 pos) const{
            dr = dr / mag;
        }
 
-       v = SCALE * v + c; //vec3.scaleAndAdd(v, c, v, SCALE);
+       v = SCALE * v + c;
        dr = dr * glm::abs(SCALE) + 1.0;
    }
 
