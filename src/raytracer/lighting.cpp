@@ -241,11 +241,12 @@ SceneColor computePixelLighting(glm::vec4  position,
 
     // Reflections
     if(raytracer.m_config.enableReflection && recursiveDepth < RECURSIVE_DEPTH_LIMIT && !isClose(glm::length(material.cReflective), 0)){
-        glm::vec4 reflectedDirection = 2 * std::max(0.0f, glm::dot(normal, directionToCamera)) * normal - directionToCamera;
+        glm::vec4 reflectedDirection = 2 * glm::dot(normal, directionToCamera) * normal - directionToCamera;
 
         Ray reflectedRay{position, reflectedDirection};
         std::optional<Intersect> reflectionIntersect = intersect(scene, reflectedRay);
         if(reflectionIntersect.has_value() && reflectionIntersect.value().t >= 0.01){
+            std::cout << "REFLECTED" << std::endl;
             Intersect& inter = reflectionIntersect.value();
             glm::vec4 position = reflectedRay.evaluate(inter.t);
             SceneColor reflectedColor = computePixelLighting(position, glm::vec4{inter.normal, 0}, -reflectedDirection, inter.shape, recursiveDepth + 1, scene, raytracer);

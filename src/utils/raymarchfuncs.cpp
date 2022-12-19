@@ -120,16 +120,22 @@ SDFResult smoothPolyMinMultiple(std::vector<float>& shapeSDFs, const std::vector
 
     // Merge the blends
     std::vector<float> finalBlends;
+    std::vector<const Shape*> finalShapeVec;
     float sum = 0.0f;
     float currBlend = 1.0f;
     for (int i = 0; i < blends.size(); i++) {
+        if (isClose(blends[i] * currBlend, 0)) {
+            continue;
+        }
+
         finalBlends.push_back(blends[i] * currBlend);
+        finalShapeVec.push_back(shapeVec[i]);
         sum += blends[i] * currBlend;
         currBlend *= 1.0f - blends[i];
     }
     finalBlends.push_back(1.0f - sum);
 
-    return {{true, finalBlends, shapeVec}, currDist};
+    return {{true, finalBlends, finalShapeVec}, currDist};
 
 }
 
