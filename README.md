@@ -1,5 +1,7 @@
 # Project 4: Illuminate
 
+$$\sum_{i=0}^n x_i$$
+
 ## Overview
 
 Overall I think my implementation of Illuminate is pretty straight-forward, but here are some points of interest that may be relevant:
